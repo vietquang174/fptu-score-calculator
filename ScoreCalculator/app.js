@@ -1985,23 +1985,23 @@ function renderExportCard(targetContainer, semesterNum, options) {
         return `
             <tr class="${idx % 2 === 0 ? "bg-white" : "bg-slate-50/70"} border-b border-slate-200">
                 <td class="py-3 px-4 font-bold text-slate-800 border-r border-slate-200 text-sm align-middle" style="vertical-align: middle !important;">
-                    <div class="cell-wrapper" style="display: flex; align-items: center; min-height: 34px;">
+                    <div class="cell-wrapper" style="display: flex; align-items: center; min-height: 40px;">
                         ${sub.code}
                     </div>
                 </td>
                 <td class="py-3 px-4 text-slate-700 font-medium border-r border-slate-200 text-sm align-middle" style="vertical-align: middle !important;">
-                    <div style="min-height: 34px; display: flex; flex-direction: column; justify-content: center;">
+                    <div style="min-height: 40px; display: flex; flex-direction: column; justify-content: center;">
                         <span class="font-bold text-slate-800">${sub.nameVi}</span>
                         ${compBreakdownHtml}
                     </div>
                 </td>
                 <td class="py-3 px-4 text-center font-bold font-mono ${subRes.isPass ? "text-slate-900" : "text-rose-600"} border-r border-slate-200 text-base align-middle" style="vertical-align: middle !important;">
-                    <div class="cell-wrapper-center" style="display: flex; align-items: center; justify-content: center; min-height: 34px;">
+                    <div class="cell-wrapper-center" style="display: flex; align-items: center; justify-content: center; min-height: 40px;">
                         ${subRes.roundedScore}
                     </div>
                 </td>
                 <td class="py-3 px-4 text-center align-middle" style="vertical-align: middle !important;">
-                    <div class="cell-wrapper-center" style="display: flex; align-items: center; justify-content: center; min-height: 34px;">
+                    <div class="cell-wrapper-center" style="display: flex; align-items: center; justify-content: center; min-height: 40px;">
                         ${badge}
                     </div>
                 </td>
@@ -2057,13 +2057,13 @@ function renderExportCard(targetContainer, semesterNum, options) {
 
                 <!-- Bảng điểm chi tiết & tổng kết -->
                 <div class="px-6 py-4 bg-white">
-                    <div class="border border-slate-300 overflow-hidden shadow-xs">
-                        <table class="w-full text-left text-xs sm:text-sm border-collapse">
+                    <div class="overflow-hidden shadow-xs rounded-lg">
+                        <table class="w-full text-left text-xs sm:text-sm">
                             <thead>
                                 <tr class="bg-slate-900 text-white font-bold">
-                                    <th class="py-3.5 px-4 border-r border-slate-800 w-28 text-left text-xs uppercase tracking-wider align-middle" style="vertical-align: middle !important;">MÃ MÔN</th>
-                                    <th class="py-3.5 px-4 border-r border-slate-800 text-left text-xs uppercase tracking-wider align-middle" style="vertical-align: middle !important;">TÊN MÔN HỌC &amp; THÀNH PHẦN (% TRỌNG SỐ)</th>
-                                    <th class="py-3.5 px-4 border-r border-slate-800 text-center w-32 text-xs uppercase tracking-wider align-middle" style="vertical-align: middle !important;">ĐIỂM TỔNG</th>
+                                    <th class="py-3.5 px-4 w-28 text-left text-xs uppercase tracking-wider align-middle" style="vertical-align: middle !important;">MÃ MÔN</th>
+                                    <th class="py-3.5 px-4 text-left text-xs uppercase tracking-wider align-middle" style="vertical-align: middle !important;">TÊN MÔN HỌC &amp; THÀNH PHẦN (% TRỌNG SỐ)</th>
+                                    <th class="py-3.5 px-4 text-center w-32 text-xs uppercase tracking-wider align-middle" style="vertical-align: middle !important;">ĐIỂM TỔNG</th>
                                     <th class="py-3.5 px-4 text-center w-32 text-xs uppercase tracking-wider align-middle" style="vertical-align: middle !important;">TRẠNG THÁI</th>
                                 </tr>
                             </thead>
@@ -2071,6 +2071,28 @@ function renderExportCard(targetContainer, semesterNum, options) {
                                 ${rowsHtml}
                             </tbody>
                         </table>
+                    </div>
+
+                    <!-- Dải thống kê học vụ & xác thực kỳ học -->
+                    <div class="mt-4 p-3.5 bg-slate-50 border border-slate-200 rounded-xl grid grid-cols-4 gap-2 text-center">
+                        <div>
+                            <span class="text-[10px] font-bold uppercase tracking-wider text-slate-500 block">Tổng số môn</span>
+                            <span class="text-sm font-black text-slate-800 mt-0.5 block">${subjects.length} môn</span>
+                        </div>
+                        <div>
+                            <span class="text-[10px] font-bold uppercase tracking-wider text-slate-500 block">Môn tính TBM</span>
+                            <span class="text-sm font-black text-fptBlue mt-0.5 block">${res.totalScoredCount} môn</span>
+                        </div>
+                        <div>
+                            <span class="text-[10px] font-bold uppercase tracking-wider text-slate-500 block">Tiến độ nhập</span>
+                            <span class="text-sm font-black text-emerald-600 mt-0.5 block">${res.completedScoredCount}/${res.totalScoredCount}</span>
+                        </div>
+                        <div>
+                            <span class="text-[10px] font-bold uppercase tracking-wider text-slate-500 block">Điều kiện FE &ge; 4.0</span>
+                            <span class="text-sm font-black ${res.hasFailedScored ? 'text-rose-600' : 'text-emerald-600'} mt-0.5 block">
+                                ${res.hasFailedScored ? 'Có môn liệt' : '100% Đạt chuẩn'}
+                            </span>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -2097,7 +2119,7 @@ function renderExportCard(targetContainer, semesterNum, options) {
 
                 <!-- Footer & Ghi chú quy chế -->
                 <div class="mt-6 pt-4 border-t border-slate-200 flex flex-col sm:flex-row items-center justify-between gap-2 text-xs text-slate-500 relative z-10">
-                    <p class="italic max-w-md">${randomQuote}</p>
+                    <p class="italic text-xs text-slate-500 leading-normal flex-1 pr-4 whitespace-normal">${randomQuote}</p>
                     <div class="text-[11px] text-slate-400 font-mono">
                         Xuất lúc: ${dateStr} • FPTU SE K20 Tool
                     </div>
@@ -2147,6 +2169,7 @@ async function captureCertificateCardSandbox(sourceCard) {
     clonedCard.style.minHeight = "1131px";
     clonedCard.style.transform = "none";
     clonedCard.style.boxSizing = "border-box";
+    clonedCard.style.border = "2px solid #0066B2";
     clonedCard.style.backgroundColor = "#FFFFFF";
 
     sandbox.appendChild(clonedCard);

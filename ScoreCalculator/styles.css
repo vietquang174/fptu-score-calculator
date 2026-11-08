@@ -406,16 +406,46 @@ input[type="number"] {
     background: #FFFFFF;
     border-radius: 0px !important;
     box-shadow: 0 10px 30px rgba(15, 23, 42, 0.08);
-    border: 1px solid #CBD5E1;
+    border: 2px solid #0066B2 !important;
     position: relative;
     overflow: visible;
 }
 
-#certificate-card table td,
+#certificate-card table {
+    border-collapse: separate !important;
+    border-spacing: 0 !important;
+    border: 1.5px solid #CBD5E1 !important;
+    border-radius: 6px !important;
+    overflow: hidden !important;
+    width: 100% !important;
+}
+
 #certificate-card table th {
+    border-right: 1px solid #334155 !important;
+    border-bottom: 1px solid #CBD5E1 !important;
     vertical-align: middle !important;
-    padding-top: 6px !important;
-    padding-bottom: 6px !important;
+    padding-top: 10px !important;
+    padding-bottom: 10px !important;
+}
+
+#certificate-card table th:last-child {
+    border-right: none !important;
+}
+
+#certificate-card table td {
+    vertical-align: middle !important;
+    padding-top: 11px !important;
+    padding-bottom: 11px !important;
+    border-right: 1px solid #E2E8F0 !important;
+    border-bottom: 1px solid #E2E8F0 !important;
+}
+
+#certificate-card table td:last-child {
+    border-right: none !important;
+}
+
+#certificate-card table tr:last-child td {
+    border-bottom: none !important;
 }
 
 #certificate-card table td .cell-wrapper {
@@ -446,8 +476,8 @@ input[type="number"] {
 #certificate-card::after {
     content: "";
     position: absolute;
-    right: 28px;
-    bottom: 24px;
+    right: 32px;
+    bottom: 45px;
     width: 135px;
     height: 135px;
     background-image: url('assets/mascot_stamp.svg');
