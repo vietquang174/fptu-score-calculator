@@ -2084,7 +2084,7 @@ function renderExportCard(targetContainer, semesterNum, options) {
                     <div class="sm:text-right text-right">
                         <span class="text-xs font-bold uppercase tracking-wider text-slate-500 block" style="font-size: 11px; font-weight: 700; color: #64748B; text-transform: uppercase;">DỰ ĐOÁN XẾP LOẠI HỌC KỲ</span>
                         <div class="mt-1">
-                            <span class="cert-honor-badge inline-block px-4 py-1.5 rounded-lg text-sm font-extrabold border ${res.honor.badgeClass}">
+                            <span class="cert-honor-badge honor-${res.honor.level} inline-block px-4 py-1.5 rounded-lg text-sm font-extrabold border ${res.honor.badgeClass}">
                                 ${res.honor.highlightBadge ? res.honor.highlightBadge : res.honor.title}
                             </span>
                         </div>

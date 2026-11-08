@@ -638,6 +638,51 @@ input[type="number"] {
     border-radius: 8px !important;
     font-size: 14px !important;
     font-weight: 800 !important;
+    border: 1.5px solid transparent !important;
+    box-sizing: border-box !important;
+}
+
+#certificate-card .honor-cocvang,
+#certificate-card .honor-top100 {
+    background: #FEF3C7 !important;
+    color: #92400E !important;
+    border-color: #F59E0B !important;
+}
+
+#certificate-card .honor-xuatsac {
+    background: #FAF5FF !important;
+    color: #6B21A8 !important;
+    border-color: #D8B4FE !important;
+}
+
+#certificate-card .honor-gioi {
+    background: #FFFBEB !important;
+    color: #B45309 !important;
+    border-color: #FDE68A !important;
+}
+
+#certificate-card .honor-kha {
+    background: #EFF6FF !important;
+    color: #1D4ED8 !important;
+    border-color: #BFDBFE !important;
+}
+
+#certificate-card .honor-pass {
+    background: #F0FDF4 !important;
+    color: #15803D !important;
+    border-color: #BBF7D0 !important;
+}
+
+#certificate-card .honor-fail {
+    background: #FEF2F2 !important;
+    color: #B91C1C !important;
+    border-color: #FECACA !important;
+}
+
+#certificate-card .honor-none {
+    background: #F1F5F9 !important;
+    color: #64748B !important;
+    border-color: #CBD5E1 !important;
 }
 
 #certificate-card .cert-footer {
@@ -742,7 +787,8 @@ input[type="number"] {
     pointer-events: none;
     user-select: none;
     transform: rotate(-8deg);
-    z-index: 25 !important;
+    z-index: 5 !important;
+    opacity: 0.16 !important;
 }
 
 /* Subtle background text watermark */
