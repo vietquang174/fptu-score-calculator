@@ -1,3 +1,7 @@
+.hidden {
+    display: none !important;
+}
+
 /* ================================================================
    FPT UNIVERSITY SCORE CALCULATOR - BIT_SE_K20B
    UI Design System, Mascot Theme & Mobile Responsiveness
@@ -411,6 +415,33 @@ input[type="number"] {
     overflow: visible;
 }
 
+
+#certificate-card .cert-header-banner {
+    background: linear-gradient(135deg, #004D99 0%, #0066B2 55%, #0284C7 100%) !important;
+    color: #FFFFFF !important;
+}
+
+#certificate-card .cert-header-banner h2,
+#certificate-card .cert-header-banner .cert-brand-title {
+    color: #FFFFFF !important;
+}
+
+#certificate-card .cert-header-banner p {
+    color: #E0F2FE !important;
+}
+
+#certificate-card .cert-header-banner .text-sky-300 {
+    color: #7DD3FC !important;
+}
+
+#certificate-card .cert-header-banner .text-amber-300 {
+    color: #FCD34D !important;
+}
+
+#certificate-card .cert-brand-title {
+    color: #FFFFFF !important;
+}
+
 #certificate-card .cert-table {
     border-collapse: separate !important;
     border-spacing: 0 !important;
@@ -776,19 +807,18 @@ input[type="number"] {
 #certificate-card::after {
     content: "";
     position: absolute;
-    right: 32px;
-    bottom: 45px;
-    width: 135px;
-    height: 135px;
+    right: 28px;
+    bottom: 35px;
+    width: 140px;
+    height: 140px;
     background-image: url('assets/mascot_stamp.svg');
     background-size: contain;
     background-repeat: no-repeat;
-    opacity: 0.22;
+    opacity: 0.28 !important;
     pointer-events: none;
     user-select: none;
     transform: rotate(-8deg);
-    z-index: 5 !important;
-    opacity: 0.16 !important;
+    z-index: 30 !important;
 }
 
 /* Subtle background text watermark */

@@ -2016,11 +2016,11 @@ function renderExportCard(targetContainer, semesterNum, options) {
     card.innerHTML = `
         <div class="card-watermark">FPTU</div>
 
-        <div class="relative z-10 text-slate-800 flex flex-col justify-between" style="min-height: 1123px;">
+        <div class="relative z-10 flex flex-col justify-between" style="min-height: 1123px;">
             <div>
                 <!-- Vibrant Royal FPT Blue Gradient Header -->
-                <div class="p-5 sm:p-6 text-white relative overflow-hidden" 
-                     style="background: linear-gradient(135deg, #004D99 0%, #0066B2 55%, #0284C7 100%);">
+                <div class="p-5 sm:p-6 text-white relative overflow-hidden cert-header-banner" 
+                     style="background: linear-gradient(135deg, #004D99 0%, #0066B2 55%, #0284C7 100%); color: #FFFFFF !important;">
                     
                     <div class="absolute -right-12 -top-12 w-52 h-52 bg-white/10 rounded-full blur-3xl pointer-events-none"></div>
                     <!-- Hidden Institutional Tag for Verification -->
@@ -2029,10 +2029,10 @@ function renderExportCard(targetContainer, semesterNum, options) {
                     <!-- Top Row: Big Mascot Logo & Web Brand -->
                     <div class="flex items-center justify-between pb-3.5 border-b border-white/20 relative z-10">
                         <div class="flex items-center gap-3.5">
-                            <div class="w-12 h-12 flex-shrink-0">
+                            <div class="w-12 h-12 flex-shrink-0" style="width: 48px; height: 48px; min-width: 48px; min-height: 48px;">
                                 ${mascotSvg}
                             </div>
-                            <span class="text-xl sm:text-2xl font-black text-white tracking-tight" style="font-family: 'Plus Jakarta Sans', 'Inter', 'Be Vietnam Pro', sans-serif;">
+                            <span class="text-xl sm:text-2xl font-black text-white tracking-tight cert-brand-title" style="font-family: 'Plus Jakarta Sans', 'Inter', 'Be Vietnam Pro', sans-serif; color: #FFFFFF !important;">
                                 FPTU&nbsp;<span class="text-sky-300">SCORE</span><span class="text-white/40 font-light mx-0.5">.</span><span class="text-amber-300">CALC</span>
                             </span>
                         </div>
@@ -2046,10 +2046,10 @@ function renderExportCard(targetContainer, semesterNum, options) {
 
                     <!-- Document Title Section (Clean, Fresh, No FPT University subheader) -->
                     <div class="pt-4 relative z-10">
-                        <h2 class="text-2xl sm:text-3xl font-black text-white tracking-tight uppercase" style="font-family: 'Plus Jakarta Sans', 'Inter', 'Be Vietnam Pro', sans-serif;">
+                        <h2 class="text-2xl sm:text-3xl font-black text-white tracking-tight uppercase" style="font-family: 'Plus Jakarta Sans', 'Inter', 'Be Vietnam Pro', sans-serif; color: #FFFFFF !important;">
                             PHIẾU BÁO ĐIỂM DỰ ĐOÁN HỌC KỲ
                         </h2>
-                        <p class="text-xs sm:text-sm text-sky-100 font-medium mt-1">
+                        <p class="text-xs sm:text-sm text-sky-100 font-medium mt-1" style="color: #E0F2FE !important;">
                             Phiếu Dự Đoán Điểm • Chương trình Cử nhân Kỹ thuật Phần mềm (Khóa K20)
                         </p>
                     </div>
@@ -2148,6 +2148,30 @@ async function captureCertificateCardSandbox(sourceCard) {
 
     sandbox.appendChild(clonedCard);
     document.body.appendChild(sandbox);
+
+    // Programmatic pixel-perfect vertical centering for html2canvas:
+    // Calculates exact row height vs child height and applies balanced padding-top/bottom
+    const certRows = clonedCard.querySelectorAll('.cert-data-row');
+    certRows.forEach(row => {
+        const rowHeight = row.offsetHeight || row.getBoundingClientRect().height;
+        if (!rowHeight) return;
+
+        const colCode = row.querySelector('.cert-col-code');
+        const colScore = row.querySelector('.cert-col-score');
+        const colStatus = row.querySelector('.cert-col-status');
+
+        [colCode, colScore, colStatus].forEach(col => {
+            if (!col) return;
+            const inner = col.firstElementChild || col;
+            const innerHeight = inner.offsetHeight || inner.getBoundingClientRect().height || 20;
+            const padTop = Math.max(0, Math.round((rowHeight - innerHeight) / 2));
+            const padBottom = Math.max(0, rowHeight - innerHeight - padTop);
+            col.style.setProperty('display', 'block', 'important');
+            col.style.setProperty('padding-top', padTop + 'px', 'important');
+            col.style.setProperty('padding-bottom', padBottom + 'px', 'important');
+            col.style.setProperty('box-sizing', 'border-box', 'important');
+        });
+    });
 
     try {
         const canvas = await html2canvas(clonedCard, {
