@@ -1961,11 +1961,11 @@ function renderExportCard(targetContainer, semesterNum, options) {
         const subRes = calculateSubjectScore(sub);
         let badge = "";
         if (sub.isPassFailOnly) {
-            badge = subRes.isPass ? `<span class="inline-flex items-center justify-center align-middle px-2.5 py-1 rounded text-xs font-bold bg-emerald-50 text-emerald-700 border border-emerald-200">PASS</span>` : `<span class="inline-flex items-center justify-center align-middle px-2.5 py-1 rounded text-xs font-bold bg-rose-50 text-rose-600 border border-rose-200">NOT PASS</span>`;
+            badge = subRes.isPass ? `<span class="badge-pass inline-flex items-center justify-center align-middle px-2.5 py-1 rounded text-xs font-bold bg-emerald-50 text-emerald-700 border border-emerald-200">PASS</span>` : `<span class="badge-fail inline-flex items-center justify-center align-middle px-2.5 py-1 rounded text-xs font-bold bg-rose-50 text-rose-600 border border-rose-200">NOT PASS</span>`;
         } else if (subRes.isComplete) {
-            badge = subRes.isPass ? `<span class="inline-flex items-center justify-center align-middle px-2.5 py-1 rounded text-xs font-bold bg-emerald-50 text-emerald-700 border border-emerald-200">PASS</span>` : `<span class="inline-flex items-center justify-center align-middle px-2.5 py-1 rounded text-xs font-bold bg-rose-50 text-rose-600 border border-rose-200">NOT PASS</span>`;
+            badge = subRes.isPass ? `<span class="badge-pass inline-flex items-center justify-center align-middle px-2.5 py-1 rounded text-xs font-bold bg-emerald-50 text-emerald-700 border border-emerald-200">PASS</span>` : `<span class="badge-fail inline-flex items-center justify-center align-middle px-2.5 py-1 rounded text-xs font-bold bg-rose-50 text-rose-600 border border-rose-200">NOT PASS</span>`;
         } else {
-            badge = `<span class="inline-flex items-center justify-center align-middle px-2.5 py-1 rounded text-xs font-medium bg-slate-100 text-slate-500">Đang nhập</span>`;
+            badge = `<span class="badge-pending inline-flex items-center justify-center align-middle px-2.5 py-1 rounded text-xs font-medium bg-slate-100 text-slate-500">Đang nhập</span>`;
         }
 
         let compBreakdownHtml = "";
@@ -1977,35 +1977,35 @@ function renderExportCard(targetContainer, semesterNum, options) {
                 const scoreStr = (compRes && compRes.value !== null)
                     ? compRes.value.toFixed(1)
                     : (comp.avgValue || '-');
-                return `<span class="inline-flex items-center gap-1 px-1.5 py-0.5 rounded bg-slate-100 text-slate-700 border border-slate-200 text-[10.5px] font-medium">${comp.name} (${comp.weight}%): <strong class="text-slate-900">${scoreStr}</strong></span>`;
+                return `<span class="cert-chip inline-flex items-center gap-1 px-1.5 py-0.5 rounded bg-slate-100 text-slate-700 border border-slate-200 text-[10.5px] font-medium">${comp.name} (${comp.weight}%): <strong class="text-slate-900">${scoreStr}</strong></span>`;
             });
             compBreakdownHtml = `<div class="mt-1.5 flex flex-wrap items-center gap-1.5">${compParts.join("")}</div>`;
         }
 
         return `
-            <tr class="${idx % 2 === 0 ? "bg-white" : "bg-slate-50/70"} border-b border-slate-200">
-                <td class="font-bold text-slate-800 border-r border-slate-200 text-sm align-middle" style="vertical-align: middle !important; padding: 12px 16px !important;">
-                    <div class="cell-wrapper" style="display: inline-block; vertical-align: middle; line-height: normal; position: relative; top: -3px;">
+            <div class="${idx % 2 === 0 ? "bg-white" : "bg-slate-50/70"} cert-data-row border-b border-slate-200 flex items-stretch">
+                <div class="cert-col-code w-28 flex-shrink-0 p-3 sm:px-4 font-bold text-slate-800 border-r border-slate-200 text-sm flex items-center box-border" style="vertical-align: middle !important;">
+                    <div class="cell-wrapper flex items-center">
                         ${sub.code}
                     </div>
-                </td>
-                <td class="text-slate-700 font-medium border-r border-slate-200 text-sm align-middle" style="vertical-align: middle !important; padding: 12px 16px !important;">
+                </div>
+                <div class="cert-col-name flex-1 min-w-0 p-3 sm:px-4 text-slate-700 font-medium border-r border-slate-200 text-sm flex flex-col justify-center box-border" style="vertical-align: middle !important;">
                     <div style="line-height: 1.4;">
                         <span class="font-bold text-slate-800 text-sm">${sub.nameVi}</span>
                         ${compBreakdownHtml}
                     </div>
-                </td>
-                <td class="text-center font-bold font-mono ${subRes.isPass ? "text-slate-900" : "text-rose-600"} border-r border-slate-200 text-base align-middle" style="vertical-align: middle !important; text-align: center !important; padding: 12px 16px !important;">
-                    <div class="cell-wrapper-center" style="display: inline-block; vertical-align: middle; text-align: center; line-height: normal; position: relative; top: -3px;">
+                </div>
+                <div class="cert-col-score w-28 flex-shrink-0 p-3 sm:px-4 text-center font-bold font-mono ${subRes.isPass ? "text-slate-900" : "text-rose-600"} border-r border-slate-200 text-base flex items-center justify-center box-border" style="vertical-align: middle !important; text-align: center !important;">
+                    <div class="cell-wrapper-center flex items-center justify-center">
                         ${subRes.roundedScore}
                     </div>
-                </td>
-                <td class="text-center align-middle" style="vertical-align: middle !important; text-align: center !important; padding: 12px 16px !important;">
-                    <div class="cell-wrapper-center" style="display: inline-block; vertical-align: middle; text-align: center; line-height: normal; position: relative; top: -3px;">
+                </div>
+                <div class="cert-col-status w-32 flex-shrink-0 p-3 sm:px-4 text-center flex items-center justify-center box-border" style="vertical-align: middle !important; text-align: center !important;">
+                    <div class="cell-wrapper-center flex items-center justify-center">
                         ${badge}
                     </div>
-                </td>
-            </tr>
+                </div>
+            </div>
         `;
     }).join("");
 
@@ -2057,38 +2057,34 @@ function renderExportCard(targetContainer, semesterNum, options) {
 
                 <!-- Bảng điểm chi tiết & tổng kết -->
                 <div class="px-6 py-4 bg-white">
-                    <div class="overflow-hidden shadow-xs rounded-lg border border-slate-200">
-                        <table class="w-full text-left text-xs sm:text-sm">
-                            <thead>
-                                <tr class="bg-slate-900 text-white font-bold">
-                                    <th class="py-3.5 px-4 w-28 text-left text-xs uppercase tracking-wider align-middle" style="vertical-align: middle !important;">MÃ MÔN</th>
-                                    <th class="py-3.5 px-4 text-left text-xs uppercase tracking-wider align-middle" style="vertical-align: middle !important;">TÊN MÔN HỌC &amp; THÀNH PHẦN (% TRỌNG SỐ)</th>
-                                    <th class="py-3.5 px-4 text-center w-32 text-xs uppercase tracking-wider align-middle" style="vertical-align: middle !important;">ĐIỂM TỔNG</th>
-                                    <th class="py-3.5 px-4 text-center w-32 text-xs uppercase tracking-wider align-middle" style="vertical-align: middle !important;">TRẠNG THÁI</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                ${rowsHtml}
-                            </tbody>
-                        </table>
+                    <div class="cert-table overflow-hidden shadow-xs rounded-lg border border-slate-200">
+                        <div class="cert-header-row bg-slate-900 text-white font-bold flex items-stretch">
+                            <div class="cert-h-code w-28 flex-shrink-0 py-3.5 px-4 text-left text-xs uppercase tracking-wider flex items-center" style="vertical-align: middle !important;">MÃ MÔN</div>
+                            <div class="cert-h-name flex-1 min-w-0 py-3.5 px-4 text-left text-xs uppercase tracking-wider flex items-center" style="vertical-align: middle !important;">TÊN MÔN HỌC &amp; THÀNH PHẦN (% TRỌNG SỐ)</div>
+                            <div class="cert-h-score w-28 flex-shrink-0 py-3.5 px-4 text-center text-xs uppercase tracking-wider flex items-center justify-center" style="vertical-align: middle !important;">ĐIỂM TỔNG</div>
+                            <div class="cert-h-status w-32 flex-shrink-0 py-3.5 px-4 text-center text-xs uppercase tracking-wider flex items-center justify-center" style="vertical-align: middle !important;">TRẠNG THÁI</div>
+                        </div>
+                        <div class="cert-body">
+                            ${rowsHtml}
+                        </div>
                     </div>
                 </div>
             </div>
 
             <!-- Tổng kết TBM & Danh hiệu & Footer (Ghim dưới đáy trang A4) -->
-            <div class="px-6 py-4 bg-white border-t border-slate-200">
-                <div class="p-4 bg-slate-50 border border-slate-300 grid grid-cols-1 sm:grid-cols-2 gap-3 items-center">
+            <div class="cert-summary-container px-6 py-4 bg-white border-t border-slate-200">
+                <div class="cert-summary-box p-4 bg-slate-50 border border-slate-300 grid grid-cols-1 sm:grid-cols-2 gap-3 items-center">
                     <div>
-                        <span class="text-xs font-bold uppercase tracking-wider text-slate-500 block">ĐIỂM TRUNG BÌNH HỌC KỲ (TBM)</span>
+                        <span class="text-xs font-bold uppercase tracking-wider text-slate-500 block" style="font-size: 11px; font-weight: 700; color: #64748B; text-transform: uppercase;">ĐIỂM TRUNG BÌNH HỌC KỲ (TBM)</span>
                         <div class="flex items-baseline gap-2 mt-1">
-                            <span class="text-4xl font-black text-fptBlue font-mono">${res.tbmStr}</span>
-                            <span class="text-xs text-slate-500 font-medium">/ 10.0 (Trung bình cộng)</span>
+                            <span class="text-4xl font-black text-fptBlue font-mono" style="font-size: 36px; font-weight: 900; color: #0066B2; font-family: monospace;">${res.tbmStr}</span>
+                            <span class="text-xs text-slate-500 font-medium" style="font-size: 12px; color: #64748B; font-weight: 500;">/ 10.0 (Trung bình cộng)</span>
                         </div>
                     </div>
-                    <div class="sm:text-right">
-                        <span class="text-xs font-bold uppercase tracking-wider text-slate-500 block">DỰ ĐOÁN XẾP LOẠI HỌC KỲ</span>
+                    <div class="sm:text-right text-right">
+                        <span class="text-xs font-bold uppercase tracking-wider text-slate-500 block" style="font-size: 11px; font-weight: 700; color: #64748B; text-transform: uppercase;">DỰ ĐOÁN XẾP LOẠI HỌC KỲ</span>
                         <div class="mt-1">
-                            <span class="inline-block px-4 py-1.5 rounded-lg text-sm font-extrabold border ${res.honor.badgeClass}">
+                            <span class="cert-honor-badge inline-block px-4 py-1.5 rounded-lg text-sm font-extrabold border ${res.honor.badgeClass}">
                                 ${res.honor.highlightBadge ? res.honor.highlightBadge : res.honor.title}
                             </span>
                         </div>
@@ -2096,9 +2092,9 @@ function renderExportCard(targetContainer, semesterNum, options) {
                 </div>
 
                 <!-- Footer & Ghi chú quy chế -->
-                <div class="mt-6 pt-4 border-t border-slate-200 flex flex-col sm:flex-row items-center justify-between gap-2 text-xs text-slate-500 relative z-10">
-                    <p class="italic text-xs text-slate-500 leading-normal flex-1 pr-4 whitespace-normal">${randomQuote}</p>
-                    <div class="text-[11px] text-slate-400 font-mono">
+                <div class="cert-footer mt-6 pt-4 border-t border-slate-200 flex flex-col sm:flex-row items-center justify-between gap-2 text-xs text-slate-500 relative z-10">
+                    <p class="italic text-xs text-slate-500 leading-normal flex-1 pr-4 whitespace-normal" style="font-style: italic; font-size: 11px; color: #64748B; margin: 0;">${randomQuote}</p>
+                    <div class="text-[11px] text-slate-400 font-mono" style="font-size: 11px; color: #94A3B8; font-family: monospace; white-space: nowrap;">
                         Xuất lúc: ${dateStr} • FPTU SE K20 Tool
                     </div>
                 </div>
