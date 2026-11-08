@@ -434,8 +434,7 @@ input[type="number"] {
 
 #certificate-card table td {
     vertical-align: middle !important;
-    padding: 0 !important;
-    height: 1px;
+    padding: 12px 16px !important;
     border-right: 1px solid #E2E8F0 !important;
     border-bottom: 1px solid #E2E8F0 !important;
 }
@@ -452,30 +451,29 @@ input[type="number"] {
     display: flex;
     align-items: center;
     justify-content: flex-start;
-    height: 100%;
-    min-height: 52px;
-    padding: 10px 14px;
-    box-sizing: border-box;
+    vertical-align: middle;
+    line-height: normal;
+    position: relative;
+    top: -3px;
 }
 
 #certificate-card table td .cell-wrapper-center {
     display: flex;
     align-items: center;
     justify-content: center;
-    height: 100%;
-    min-height: 52px;
-    padding: 10px 14px;
-    box-sizing: border-box;
+    vertical-align: middle;
+    text-align: center;
+    line-height: normal;
+    position: relative;
+    top: -3px;
 }
 
 #certificate-card table td .cell-wrapper-col {
     display: flex;
     flex-direction: column;
     justify-content: center;
-    height: 100%;
-    min-height: 52px;
-    padding: 10px 14px;
-    box-sizing: border-box;
+    vertical-align: middle;
+    line-height: normal;
 }
 
 #certificate-card::before {
