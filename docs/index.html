@@ -1,0 +1,1036 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
+    <title>FPTU Score Calc - Công Cụ Tính Điểm & Vinh Danh Cóc Vàng BIT_SE_K20B</title>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,400&family=Inter:wght@400;500;600;700;800;900&family=Plus+Jakarta+Sans:ital,wght@0,400;0,500;0,600;0,700;0,800;0,900;1,400&subset=vietnamese,latin-ext&display=swap" rel="stylesheet">
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/svg+xml" href="assets/mascot_happy.svg">
+    
+    <!-- Tailwind CSS via CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        fptBlue: '#0066B2',
+                        fptBlueDark: '#1E40AF',
+                        fptBlueLight: '#0284C7',
+                        fptBlueSubtle: '#F0F7FF',
+                        fptOrange: '#F27024',
+                        fptOrangeHover: '#EA580C',
+                        fptOrangeSubtle: '#FFF7ED',
+                        fptGreen: '#10B981',
+                        fptGold: '#FFB800',
+                        fptGoldDark: '#D97706'
+                    }
+                }
+            }
+        }
+    </script>
+    
+    <!-- html2canvas for card screenshot export -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <!-- canvas-confetti for fireworks -->
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+    <!-- Custom Stylesheet -->
+    <!-- jsPDF for direct PDF client download -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body class="bg-slate-50 text-slate-800 antialiased selection:bg-blue-600 selection:text-white min-h-screen flex flex-col">
+    <!-- Ambient Moving Glow Mesh (Visual Effect) -->
+    <div class="ambient-mesh-glow" aria-hidden="true">
+        <div class="ambient-glow-orb-1"></div>
+        <div class="ambient-glow-orb-2"></div>
+    </div>
+
+    <!-- Top Navigation Bar (Header) -->
+    <header class="sticky top-0 z-30 bg-white/95 backdrop-blur-md border-b border-slate-200/90 shadow-xs">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-16 sm:h-20">
+                <!-- Brand / Logo Area -->
+                <a href="#" class="flex items-center gap-3 group transition-transform active:scale-98">
+                    <!-- Brand Mascot Logo SVG -->
+                    <div class="w-10 h-10 sm:w-12 sm:h-12 flex-shrink-0 relative">
+                        <img src="assets/mascot_happy.svg" alt="Cóc Vàng FPTU Mascot" class="w-full h-full object-contain filter drop-shadow-sm transition-transform group-hover:scale-105">
+                    </div>
+                    <div>
+                        <div class="flex items-center gap-2">
+                            <span class="text-base sm:text-2xl font-black tracking-tight text-slate-900 flex items-center" style="font-family: 'Plus Jakarta Sans', 'Inter', 'Be Vietnam Pro', sans-serif;">
+                                FPTU&nbsp;<span class="text-fptBlue">SCORE</span><span class="text-slate-300 font-light mx-0.5">.</span><span class="text-fptOrange">CALC</span>
+                            </span>
+                            <span class="hidden sm:inline-flex text-[10px] sm:text-xs font-extrabold px-2 py-0.5 rounded-full bg-blue-50 text-fptBlue border border-blue-200">
+                                BIT_SE_K20B
+                            </span>
+                        </div>
+                        <p class="text-[11px] sm:text-xs text-slate-500 hidden sm:block font-medium">Hệ thống tính TBM kỳ & dự đoán danh hiệu Cóc Vàng Kỹ thuật Phần mềm</p>
+                    </div>
+                </a>
+
+                <!-- SPA View Navigation Switch -->
+                <!-- Desktop Tab Switch (Hidden on Mobile) -->
+                <div class="hidden md:inline-flex p-1 rounded-xl bg-slate-100/90 border border-slate-200 shadow-inner" role="tablist">
+                    <button type="button" id="tab-nav-home" onclick="switchView('home')" class="px-2.5 sm:px-3.5 py-1.5 text-xs font-bold rounded-lg transition-all bg-white text-fptBlue shadow-xs">Trang chủ</button>
+                    <button type="button" id="tab-nav-calc" onclick="switchView('calc')" class="px-2.5 sm:px-3.5 py-1.5 text-xs font-bold rounded-lg transition-all text-slate-600 hover:text-slate-900">Bảng tính</button>
+                    <button type="button" id="tab-nav-syllabus" onclick="switchView('syllabus')" class="px-2.5 sm:px-3.5 py-1.5 text-xs font-bold rounded-lg transition-all text-slate-600 hover:text-slate-900">Tra cứu Syllabus</button>
+                </div>
+
+                <!-- Desktop Right Action Buttons (Hidden on Mobile) -->
+                <div class="hidden md:flex items-center gap-2 sm:gap-3">
+                    <span class="inline-flex items-center gap-1.5 text-xs text-slate-600 bg-slate-100/90 px-3 py-1.5 rounded-xl border border-slate-200" title="Dữ liệu tính toán tạm thời lưu trong RAM trình duyệt, bảo mật tuyệt đối">
+                        <span class="w-2 h-2 rounded-full bg-emerald-500"></span>
+                        Stateless (Tự xóa khi F5)
+                    </span>
+                    <button type="button" onclick="openExportModal()" class="inline-flex items-center gap-1.5 px-3.5 py-2.5 sm:px-4 sm:py-2.5 text-xs sm:text-sm font-bold rounded-xl bg-gradient-to-r from-fptBlue to-sky-600 hover:from-blue-700 hover:to-sky-700 text-white shadow-md shadow-blue-600/20 transition-all active:scale-95">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 13a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+                        <span>Xuất Bảng Điểm</span>
+                    </button>
+                </div>
+
+                <!-- Mobile Hamburger Menu Button (< 768px Viewports) -->
+                <button type="button" id="mobile-menu-btn" onclick="toggleMobileNavMenu()" class="md:hidden p-2 rounded-xl text-slate-700 hover:text-fptBlue hover:bg-slate-100 border border-slate-200 transition focus:outline-none active:scale-95" aria-label="Menu điều hướng" aria-expanded="false">
+                    <svg id="mobile-menu-icon-bars" class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg>
+                    <svg id="mobile-menu-icon-close" class="w-6 h-6 hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+                </button>
+            </div>
+        </div>
+
+        <!-- Mobile Navigation Drawer -->
+        <div id="mobile-nav-drawer" class="hidden md:hidden border-t border-slate-200/90 bg-white/98 backdrop-blur-md px-4 py-3 space-y-2 shadow-lg">
+            <div class="flex flex-col space-y-1">
+                <button type="button" id="mob-nav-home" onclick="switchView('home'); toggleMobileNavMenu(false);" class="w-full flex items-center justify-between px-3.5 py-2.5 rounded-xl text-sm font-bold bg-blue-50 text-fptBlue transition text-left">
+                    <span class="flex items-center gap-2.5">
+                        <svg class="w-4 h-4 text-fptBlue" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/></svg>
+                        <span>Trang chủ</span>
+                    </span>
+                    <span class="text-xs text-fptBlue font-semibold">Home &rarr;</span>
+                </button>
+                <button type="button" id="mob-nav-calc" onclick="switchView('calc'); toggleMobileNavMenu(false);" class="w-full flex items-center justify-between px-3.5 py-2.5 rounded-xl text-sm font-semibold text-slate-700 hover:bg-slate-50 transition text-left">
+                    <span class="flex items-center gap-2.5">
+                        <svg class="w-4 h-4 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 7h6m0 10v-3m-3 3h.01M9 17h.01M9 14h.01M12 14h.01M15 11h.01M12 11h.01M9 11h.01M7 21h10a2 2 0 002-2V5a2 2 0 00-2-2H7a2 2 0 00-2 2v14a2 2 0 002 2z"/></svg>
+                        <span>Bảng tính điểm</span>
+                    </span>
+                    <span class="text-xs text-slate-400">9 Học kỳ</span>
+                </button>
+                <button type="button" id="mob-nav-syllabus" onclick="switchView('syllabus'); toggleMobileNavMenu(false);" class="w-full flex items-center justify-between px-3.5 py-2.5 rounded-xl text-sm font-semibold text-slate-700 hover:bg-slate-50 transition text-left">
+                    <span class="flex items-center gap-2.5">
+                        <svg class="w-4 h-4 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/></svg>
+                        <span>Tra cứu Syllabus</span>
+                    </span>
+                    <span class="text-xs text-slate-400">145 TC</span>
+                </button>
+            </div>
+            <div class="pt-2 border-t border-slate-100 flex flex-col gap-2">
+                <button type="button" onclick="openExportModal(); toggleMobileNavMenu(false);" class="w-full flex items-center justify-center gap-2 px-4 py-2.5 text-xs font-bold rounded-xl bg-gradient-to-r from-fptBlue to-sky-600 text-white shadow-xs active:scale-98">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 13a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+                    <span>Xuất Phiếu Báo Điểm A4</span>
+                </button>
+                <div class="flex items-center justify-center gap-1.5 text-[11px] text-slate-500 py-1">
+                    <span class="w-2 h-2 rounded-full bg-emerald-500"></span>
+                    <span>100% Stateless: Dữ liệu lưu trong RAM, tự xóa khi F5</span>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <main class="flex-1 w-full">
+    <!-- ================================================================
+         VIEW 1: DEDICATED HOME LANDING VIEW (PrepEdu Inspired - R1)
+         ================================================================ -->
+    <div id="view-home" class="view-panel block">
+        <!-- PrepEdu Inspired Hero Section -->
+        <section class="home-hero-prep relative py-16 sm:py-24 px-4 sm:px-6 lg:px-8 text-center overflow-hidden">
+            <!-- 4 Concentric Radial Rings -->
+            <div class="radial-ring radial-ring-1" aria-hidden="true"></div>
+            <div class="radial-ring radial-ring-2" aria-hidden="true"></div>
+            <div class="radial-ring radial-ring-3" aria-hidden="true"></div>
+            <div class="radial-ring radial-ring-4" aria-hidden="true"></div>
+
+            <div class="relative z-10 max-w-4xl mx-auto">
+                <!-- Top Tag -->
+                <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white/15 backdrop-blur-md border border-white/25 text-sky-200 text-xs font-black tracking-wider uppercase mb-6 shadow-sm">
+                    <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+                    <span>FPT UNIVERSITY • BIT_SE_K20B</span>
+                </div>
+
+                <!-- Main Hero Headline with Inline Mascot Badge -->
+                <h1 class="text-3xl sm:text-5xl lg:text-6xl font-black text-white tracking-tight leading-tight sm:leading-tight" style="font-family: 'Plus Jakarta Sans', 'Inter', 'Be Vietnam Pro', sans-serif;">
+                    Nền tảng Tính điểm
+                    <span class="inline-mascot-pill">
+                        <img src="assets/mascot_happy.svg" alt="Cóc Vàng Mascot" class="w-8 h-8 sm:w-10 sm:h-10 object-contain inline-block">
+                    </span>
+                    <br>
+                    &amp; Chinh phục Cóc Vàng
+                </h1>
+
+                <p class="mt-5 text-base sm:text-lg lg:text-xl text-sky-100/90 max-w-2xl mx-auto font-normal leading-relaxed">
+                    Mô phỏng bảng điểm 9 học kỳ, tính TBM unweighted real-time, kiểm tra điểm liệt FE &ge; 4.0 và xuất phiếu chứng nhận A4 chuẩn quốc tế.
+                </p>
+
+                <!-- Glowing CTA Button Group -->
+                <div class="mt-8 flex flex-col sm:flex-row items-center justify-center gap-4">
+                    <button type="button" onclick="switchView('calc')" class="btn-glowing-cta px-8 py-4 rounded-full font-black text-sm sm:text-base tracking-wide uppercase inline-flex items-center gap-2.5 text-blue-900 bg-white">
+                        <span>BẮT ĐẦU TÍNH ĐIỂM NGAY</span>
+                        <svg class="w-5 h-5 text-fptBlue" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg>
+                    </button>
+                    <button type="button" onclick="switchView('calc'); fillSampleScores();" class="px-7 py-4 rounded-full font-bold text-sm sm:text-base text-white hover:text-white bg-white/10 hover:bg-white/20 border border-white/30 backdrop-blur-sm transition inline-flex items-center gap-2">
+                        <svg class="w-5 h-5 text-amber-300" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M11.3 1.046A1 1 0 0112 2v5h4a1 1 0 01.82 1.573l-7 10A1 1 0 018 18v-5H4a1 1 0 01-.82-1.573l7-10a1 1 0 011.12-.38z" clip-rule="evenodd"/></svg>
+                        <span>Điền điểm mẫu thử</span>
+                    </button>
+                </div>
+
+                <!-- Floating Pill Badges around Hero -->
+                <div class="mt-10 flex flex-wrap items-center justify-center gap-3 text-xs font-semibold text-white/90">
+                    <div class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-white/10 backdrop-blur-md border border-white/20">
+                        <span class="text-emerald-400">🎯</span>
+                        <span>FE &ge; 4.0 Pass</span>
+                    </div>
+                    <div class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-white/10 backdrop-blur-md border border-white/20">
+                        <span class="text-amber-300">🏆</span>
+                        <span>Mục tiêu Cóc Vàng &ge; 9.6</span>
+                    </div>
+                    <div class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-white/10 backdrop-blur-md border border-white/20">
+                        <span class="text-cyan-300">⚡</span>
+                        <span>100% Stateless &amp; Real-time</span>
+                    </div>
+                    <div class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-white/10 backdrop-blur-md border border-white/20">
+                        <span class="text-blue-300">📄</span>
+                        <span>Xuất Bảng Điểm A4 Chuẩn</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Center-Stage Celebratory Showcase -->
+            <div class="relative z-10 max-w-3xl mx-auto mt-12 pt-6">
+                <div class="p-6 sm:p-8 rounded-3xl bg-white/10 backdrop-blur-xl border border-white/20 shadow-2xl relative">
+                    <div class="flex flex-col sm:flex-row items-center justify-center gap-6 text-center sm:text-left">
+                        <div class="w-36 h-36 sm:w-44 sm:h-44 flex-shrink-0 relative">
+                            <img src="assets/mascot_celebrate.svg" alt="Cóc Vàng FPTU Celebrate" class="w-full h-full object-contain filter drop-shadow-xl transform hover:scale-105 transition-transform duration-300">
+                        </div>
+                        <div>
+                            <div class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-amber-400/20 border border-amber-300/40 text-amber-200 text-xs font-black uppercase mb-2">
+                                <span>🐸 VINH DANH HỌC TẬP FPTU</span>
+                            </div>
+                            <h3 class="text-xl sm:text-2xl font-black text-white tracking-tight" style="font-family: 'Plus Jakarta Sans', 'Inter', 'Be Vietnam Pro', sans-serif;">
+                                Chinh Phục Danh Hiệu Cóc Vàng K20B
+                            </h3>
+                            <p class="text-xs sm:text-sm text-sky-100/90 mt-1.5 leading-relaxed font-normal">
+                                Đạt TBM từ 9.60 trở lên để chạm tay vào cúp vàng danh giá, nhận vòng nguyệt quế và vinh danh toàn khóa học tại FPT University.
+                            </p>
+                            <!-- Honor badges mini row -->
+                            <div class="flex items-center justify-center sm:justify-start gap-3 mt-4">
+                                <img src="assets/badge_cocvang.svg" alt="Cóc Vàng" class="w-9 h-9 object-contain filter drop-shadow" title="Huy hiệu Cóc Vàng">
+                                <img src="assets/badge_top100.svg" alt="Top 100" class="w-9 h-9 object-contain filter drop-shadow" title="Top 100 Sinh viên Xuất sắc">
+                                <img src="assets/badge_xuatsac.svg" alt="Xuất Sắc" class="w-9 h-9 object-contain filter drop-shadow" title="Sinh viên Xuất Sắc">
+                                <img src="assets/mascot_stamp.svg" alt="Dấu mộc chứng nhận" class="w-9 h-9 object-contain filter drop-shadow opacity-90" title="Dấu mộc xác thực K20B">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 4 Feature Pillars Section -->
+        <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-16">
+            <div class="text-center max-w-2xl mx-auto mb-10">
+                <h2 class="text-2xl sm:text-3xl font-black text-slate-900 tracking-tight" style="font-family: 'Plus Jakarta Sans', sans-serif;">
+                    Tính năng cốt lõi
+                </h2>
+                <p class="text-sm text-slate-600 mt-2">Được thiết kế tỉ mỉ theo chuẩn quy chế khảo thí và chương trình đào tạo FPT University.</p>
+            </div>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                <!-- Pillar 1: Syllabus Chuẩn K20B -->
+                <div onclick="switchView('syllabus')" class="p-6 rounded-2xl bg-white border border-slate-200/90 shadow-card hover:shadow-elevated transition-all flex flex-col justify-between cursor-pointer group hover:border-blue-300">
+                    <div>
+                        <div class="w-12 h-12 rounded-xl bg-blue-50 text-fptBlue flex items-center justify-center mb-4 group-hover:scale-105 transition-transform">
+                            <img src="assets/badge_dat.svg" alt="Syllabus" class="w-8 h-8 object-contain">
+                        </div>
+                        <h3 class="font-extrabold text-base text-slate-800 group-hover:text-fptBlue transition-colors">Syllabus Chuẩn K20B</h3>
+                        <p class="text-xs text-slate-600 mt-2 leading-relaxed">
+                            Cập nhật đầy đủ đề cương 9 học kỳ và 8 track chuyên ngành hẹp (.NET, Java, AI, JS, Embedded...).
+                        </p>
+                    </div>
+                    <div class="mt-4 pt-3 border-t border-slate-100 flex items-center gap-1.5 text-xs font-bold text-fptBlue">
+                        <span>9 học kỳ chuẩn</span>
+                        <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
+                    </div>
+                </div>
+
+                <!-- Pillar 2: Điểm Liệt & Điều Kiện Qua Môn -->
+                <div onclick="switchView('calc')" class="p-6 rounded-2xl bg-white border border-slate-200/90 shadow-card hover:shadow-elevated transition-all flex flex-col justify-between cursor-pointer group hover:border-emerald-300">
+                    <div>
+                        <div class="w-12 h-12 rounded-xl bg-emerald-50 text-emerald-600 flex items-center justify-center mb-4 group-hover:scale-105 transition-transform">
+                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                        </div>
+                        <h3 class="font-extrabold text-base text-slate-800 group-hover:text-emerald-600 transition-colors">Điểm Liệt &amp; Điều Kiện Qua Môn</h3>
+                        <p class="text-xs text-slate-600 mt-2 leading-relaxed">
+                            Tự động kiểm tra điểm liệt FE &ge; 4.0, các thành phần điểm quá trình &gt; 0 và cảnh báo tức thì khi có nguy cơ trượt môn.
+                        </p>
+                    </div>
+                    <div class="mt-4 pt-3 border-t border-slate-100 flex items-center gap-1.5 text-xs font-bold text-emerald-600">
+                        <span>Cảnh báo tức thì</span>
+                        <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
+                    </div>
+                </div>
+
+                <!-- Pillar 3: Tra Cứu Syllabus 9 Học Kỳ -->
+                <div onclick="switchView('syllabus')" class="p-6 rounded-2xl bg-white border border-slate-200/90 shadow-card hover:shadow-elevated transition-all flex flex-col justify-between cursor-pointer group hover:border-amber-300">
+                    <div>
+                        <div class="w-12 h-12 rounded-xl bg-amber-50 text-amber-600 flex items-center justify-center mb-4 group-hover:scale-105 transition-transform">
+                            <svg class="w-6 h-6 text-amber-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/></svg>
+                        </div>
+                        <h3 class="font-extrabold text-base text-slate-800 group-hover:text-amber-600 transition-colors">Tra Cứu Syllabus 9 Học Kỳ</h3>
+                        <p class="text-xs text-slate-600 mt-2 leading-relaxed">
+                            Tra cứu chi tiết đề cương, số tín chỉ, cấu trúc tỷ trọng % điểm và điều kiện hoàn thành từng môn từ Kỳ 0 đến Kỳ 9.
+                        </p>
+                    </div>
+                    <div class="mt-4 pt-3 border-t border-slate-100 flex items-center gap-1.5 text-xs font-bold text-amber-600">
+                        <span>Khám phá Syllabus</span>
+                        <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
+                    </div>
+                </div>
+
+                <!-- Pillar 4: Xuất Bảng Điểm A4 -->
+                <div onclick="openExportModal()" class="p-6 rounded-2xl bg-white border border-slate-200/90 shadow-card hover:shadow-elevated transition-all flex flex-col justify-between cursor-pointer group hover:border-sky-300">
+                    <div>
+                        <div class="w-12 h-12 rounded-xl bg-sky-50 text-sky-600 flex items-center justify-center mb-4 group-hover:scale-105 transition-transform">
+                            <img src="assets/mascot_stamp.svg" alt="Export" class="w-8 h-8 object-contain">
+                        </div>
+                        <h3 class="font-extrabold text-base text-slate-800 group-hover:text-sky-600 transition-colors">Xuất Bảng Điểm A4</h3>
+                        <p class="text-xs text-slate-600 mt-2 leading-relaxed">
+                            Tải trực tiếp file PDF chứng nhận chuẩn khổ A4 sắc nét, tích hợp mộc số và bảng điểm thành phần chi tiết.
+                        </p>
+                    </div>
+                    <div class="mt-4 pt-3 border-t border-slate-100 flex items-center gap-1.5 text-xs font-bold text-sky-600">
+                        <span>Tải PDF A4</span>
+                        <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <!-- ================================================================
+         VIEW 2: CALCULATOR WORKSPACE (Pro192 Inspired - R2)
+         ================================================================ -->
+    <div id="view-calculator" class="view-panel hidden pb-24 sm:pb-8">
+        <!-- Semester Tab Strip -->
+        <div class="bg-white/95 backdrop-blur-sm border-b border-slate-200 sticky top-16 sm:top-20 z-20 py-2.5 shadow-xs mb-6">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="flex items-center gap-2 overflow-x-auto no-scrollbar py-1 scroll-smooth" id="semester-tabs">
+                    <!-- Semester buttons rendered dynamically via app.js -->
+                </div>
+            </div>
+        </div>
+
+        <!-- Main Content Container -->
+        <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-10">
+            <!-- Streamlined Pro192 Engineering Header -->
+            <div class="mb-6 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 pb-5 border-b border-slate-200/80">
+                <div>
+                    <div class="inline-flex items-center gap-2 px-2.5 py-0.5 rounded-md bg-blue-50 border border-blue-200 text-fptBlue text-[11px] font-black uppercase tracking-wider mb-1.5">
+                        <span class="w-1.5 h-1.5 rounded-full bg-fptBlue animate-pulse"></span>
+                        K20B • KỸ THUẬT PHẦN MỀM
+                    </div>
+                    <h1 class="text-2xl sm:text-3xl font-black tracking-tight text-slate-900" style="font-family: 'Plus Jakarta Sans', 'Inter', 'Be Vietnam Pro', sans-serif;">
+                        <span class="text-gradient-animated">Bảng Tính Điểm Học Kỳ</span>
+                    </h1>
+                    <p class="text-xs sm:text-sm text-slate-500 font-medium mt-1">
+                        Mô phỏng bảng điểm và tính TBM real-time chuẩn Syllabus FPTU.
+                    </p>
+                </div>
+            </div>
+
+            <!-- Main Calculator Grid Container -->
+            <div id="calculator-section" class="grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-8 items-start">
+            
+            <!-- Left Column: Subjects & Grade Input (8 cols on large screens) -->
+            <div class="lg:col-span-8 space-y-6">
+                <!-- Semester Header & Action Banner -->
+                <div id="semester-info" class="bg-white rounded-2xl p-5 sm:p-6 border border-slate-200/90 shadow-sm relative overflow-hidden">
+                    <!-- Dynamic semester info rendered by app.js -->
+                </div>
+
+                <!-- Missing Warning Alert Box -->
+                <div id="semester-missing-warning" class="hidden p-4 rounded-xl bg-amber-50/90 border border-amber-300 shadow-xs">
+                    <!-- Alert text rendered dynamically -->
+                </div>
+
+                <!-- Subjects Cards List -->
+                <div id="subjects-container" class="space-y-4">
+                    <!-- Subjects cards rendered by app.js -->
+                </div>
+            </div>
+
+            <!-- Right Column: Sticky Summary & Honors Prediction Dashboard (4 cols) -->
+            <div class="lg:col-span-4 lg:sticky lg:top-36 space-y-5">
+                
+                <!-- Main Summary Card -->
+                <div class="bg-white rounded-3xl p-6 border border-slate-200/90 shadow-card relative overflow-hidden">
+                    <!-- Soft ambient glow -->
+                    <div class="absolute -right-10 -top-10 w-36 h-36 bg-sky-100 rounded-full blur-3xl pointer-events-none opacity-70"></div>
+                    
+                    <div class="flex items-center justify-between pb-4 border-b border-slate-100 relative z-10">
+                        <div class="flex items-center gap-2">
+                            <img src="assets/mascot_happy.svg" alt="Mascot Icon" class="w-5 h-5 object-contain">
+                            <span class="text-xs font-black uppercase tracking-wider text-slate-500">TỔNG KẾT HỌC KỲ</span>
+                        </div>
+                        <span id="summary-progress" class="text-xs font-extrabold text-fptBlue bg-blue-50 px-2.5 py-1 rounded-full border border-blue-200">
+                            0/0 môn
+                        </span>
+                    </div>
+
+                    <!-- Progress Bar -->
+                    <div class="w-full bg-slate-100 h-2.5 rounded-full mt-3.5 overflow-hidden">
+                        <div id="summary-progress-bar" class="h-full bg-gradient-to-r from-fptBlue via-sky-500 to-emerald-500 transition-all duration-300" style="width: 0%"></div>
+                    </div>
+
+                    <!-- Large TBM Score -->
+                    <div class="mt-6 text-center relative z-10">
+                        <span class="text-xs font-bold text-slate-400 uppercase tracking-wider block">Điểm Trung Bình Kỳ (TBM)</span>
+                        <div class="mt-1 flex items-baseline justify-center gap-1.5">
+                            <span id="summary-tbm" class="text-5xl font-black text-slate-300 tracking-tight">-</span>
+                            <span class="text-sm font-semibold text-slate-400">/ 10</span>
+                        </div>
+                        <p class="text-[11px] text-slate-400 mt-1.5 font-medium">Trung bình cộng unweighted (Không nhân số tín chỉ)</p>
+                    </div>
+
+                    <!-- Honors Badge & Prediction -->
+                    <div class="mt-6 pt-5 border-t border-slate-100 text-center relative z-10">
+                        <span class="text-xs font-bold text-slate-400 uppercase tracking-wider block mb-2.5">Dự Đoán Danh Hiệu Cuối Kỳ</span>
+                        <div class="flex justify-center">
+                            <span id="summary-honor-badge" class="inline-flex items-center gap-1.5 px-4 py-2 rounded-full text-sm font-bold bg-slate-100 text-slate-600 border border-slate-200">
+                                Chưa đủ dữ liệu
+                            </span>
+                        </div>
+                        <p id="summary-honor-desc" class="text-xs text-slate-500 mt-2.5 leading-relaxed px-2 font-medium">
+                            Nhập đầy đủ điểm các môn trong kỳ để nhận dự đoán xếp loại chính xác.
+                        </p>
+
+                        <!-- Top 100 / Coc Vang Shimmer Container -->
+                        <div id="summary-highlight-container" class="mt-3"></div>
+                    </div>
+
+                    <!-- Export Action Button -->
+                    <div class="mt-6 pt-4 border-t border-slate-100 relative z-10">
+                        <button type="button" onclick="openExportModal()" class="w-full py-3 px-4 rounded-xl font-extrabold text-sm bg-gradient-to-r from-fptBlue to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white shadow-md shadow-blue-700/20 flex items-center justify-center gap-2 transition-all active:scale-98">
+                            <svg class="w-5 h-5 text-white/90" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 13a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+                            Xuất Phiếu Bảng Điểm (PNG)
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Information & Academic Honors Reference Card with Graphics -->
+                <div class="bg-white rounded-2xl p-5 border border-slate-200/90 text-xs text-slate-600 space-y-3.5 shadow-sm">
+                    <h4 class="font-extrabold text-slate-800 flex items-center gap-2 text-sm">
+                        <svg class="w-4 h-4 text-fptBlue" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clip-rule="evenodd"/></svg>
+                        Thang Xếp Loại Học Kỳ FPTU
+                    </h4>
+                    
+                    <ul class="space-y-2 divide-y divide-slate-100">
+                        <li class="pt-1.5 flex items-center justify-between">
+                            <span class="text-red-600 font-semibold">&lt; 5.0 (hoặc có môn rớt):</span>
+                            <span class="font-bold text-red-700 bg-red-50 px-2 py-0.5 rounded border border-red-200">Chưa Đạt / Not Pass</span>
+                        </li>
+                        <li class="pt-1.5 flex items-center justify-between">
+                            <span class="text-emerald-700 font-semibold">5.0 - &lt; 7.0:</span>
+                            <span class="font-bold text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded border border-emerald-200">Đạt (Pass)</span>
+                        </li>
+                        <li class="pt-1.5 flex items-center justify-between">
+                            <span class="text-fptBlue font-semibold">7.0 - &lt; 8.0:</span>
+                            <span class="font-bold text-fptBlue bg-blue-50 px-2 py-0.5 rounded border border-blue-200">Khá</span>
+                        </li>
+                        <li class="pt-1.5 flex items-center justify-between">
+                            <span class="text-fptOrange font-semibold">8.0 - &lt; 9.0:</span>
+                            <span class="font-bold text-fptOrange bg-orange-50 px-2 py-0.5 rounded border border-orange-200">Giỏi</span>
+                        </li>
+                        <li class="pt-1.5 flex items-center justify-between">
+                            <span class="text-amber-600 font-semibold">9.0 - &lt; 9.2:</span>
+                            <span class="font-bold text-amber-700 bg-amber-50 px-2 py-0.5 rounded border border-amber-200">Xuất Sắc</span>
+                        </li>
+                        <li class="pt-1.5 flex items-center justify-between">
+                            <span class="text-amber-800 font-semibold">9.2 - &lt; 9.6:</span>
+                            <span class="font-extrabold text-amber-900 bg-amber-100 px-2 py-0.5 rounded border border-amber-300">Top 100 SVXS 🌟</span>
+                        </li>
+                        <li class="pt-1.5 flex items-center justify-between">
+                            <span class="text-amber-900 font-bold">&ge; 9.6:</span>
+                            <span class="font-black text-amber-950 bg-gradient-to-r from-amber-200 via-yellow-200 to-amber-200 px-2.5 py-0.5 rounded border border-amber-400">CÓC VÀNG 🐸🏆</span>
+                        </li>
+                    </ul>
+
+                    <!-- Achievement Badges Showcase -->
+                    <div class="pt-2 border-t border-slate-100">
+                        <span class="text-[11px] font-bold text-slate-500 uppercase tracking-wider block mb-2">Hệ Thống Huy Hiệu Khen Thưởng:</span>
+                        <div class="grid grid-cols-3 gap-2 text-center">
+                            <div class="p-1.5 rounded-xl bg-slate-50 border border-slate-200 flex flex-col items-center">
+                                <img src="assets/badge_cocvang.svg" alt="Cóc Vàng" class="w-9 h-9 object-contain">
+                                <span class="text-[9.5px] font-bold text-amber-800 mt-1">Cóc Vàng</span>
+                            </div>
+                            <div class="p-1.5 rounded-xl bg-slate-50 border border-slate-200 flex flex-col items-center">
+                                <img src="assets/badge_top100.svg" alt="Top 100" class="w-9 h-9 object-contain">
+                                <span class="text-[9.5px] font-bold text-blue-800 mt-1">Top 100</span>
+                            </div>
+                            <div class="p-1.5 rounded-xl bg-slate-50 border border-slate-200 flex flex-col items-center">
+                                <img src="assets/badge_xuatsac.svg" alt="Xuất Sắc" class="w-9 h-9 object-contain">
+                                <span class="text-[9.5px] font-bold text-amber-700 mt-1">Xuất Sắc</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <p class="text-[11px] text-slate-400 italic pt-1 border-t border-slate-100">
+                        *Lưu ý: Mốc 9.20 và 9.60 là các ngưỡng xác suất cao. Cóc Vàng và Top 100 không áp dụng cho Học kỳ 6 (OJT) và Học kỳ 8-9 (Capstone).
+                    </p>
+                </div>
+
+            </div>
+        </div>
+    </main>
+</div>
+
+    <!-- ================================================================
+         VIEW 3: DEDICATED 9-SEMESTER SYLLABUS LOOKUP (R4)
+         ================================================================ -->
+    <div id="view-syllabus" class="view-panel hidden">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12">
+            <!-- Header Banner -->
+            <div class="mb-8 pb-6 border-b border-slate-200/80">
+                <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue-50 border border-blue-200 text-fptBlue text-xs font-black uppercase tracking-wider mb-3">
+                    <span class="w-2 h-2 rounded-full bg-fptBlue animate-pulse"></span>
+                    K20B • ĐỀ CƯƠNG 9 HỌC KỲ &amp; CHUYÊN NGÀNH
+                </div>
+                <h1 class="text-2xl sm:text-4xl font-black tracking-tight text-slate-900" style="font-family: 'Plus Jakarta Sans', 'Inter', 'Be Vietnam Pro', sans-serif;">
+                    Tra Cứu <span class="bg-gradient-to-r from-blue-700 via-sky-600 to-indigo-800 bg-clip-text text-transparent font-black drop-shadow-xs">Syllabus &amp; Cấu Trúc Điểm</span>
+                </h1>
+                <p class="text-xs sm:text-sm text-slate-500 font-medium mt-1.5 max-w-2xl">
+                    Khám phá đầy đủ 10 học kỳ (Kỳ 0 - Kỳ 9), 145 tín chỉ, tỷ trọng % các thành phần điểm và điều kiện qua môn chuẩn FPT University.
+                </p>
+            </div>
+
+            <!-- Controls: Semester Tabs & Search Bar -->
+            <div class="space-y-4 mb-8">
+                <!-- Semester Filter Pills Strip -->
+                <div class="bg-white p-2 rounded-2xl border border-slate-200/90 shadow-xs">
+                    <div class="flex items-center gap-1.5 overflow-x-auto no-scrollbar py-1" id="syllabus-semester-filters">
+                        <!-- Dynamic pills rendered via app.js: Tất cả, Kỳ 0, Kỳ 1, ..., Kỳ 9 -->
+                    </div>
+                </div>
+
+                <!-- Search Bar & Filters Row -->
+                <div class="flex flex-col md:flex-row items-stretch md:items-center justify-between gap-3">
+                    <!-- Search Input -->
+                    <div class="relative flex-1">
+                        <div class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-slate-400">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
+                        </div>
+                        <input type="text" id="syllabus-search-input" oninput="handleSyllabusSearch(this.value)" placeholder="Tìm kiếm theo mã môn (PRF192, SWP391...) hoặc tên môn học..." class="w-full pl-10 pr-10 py-2.5 rounded-xl border border-slate-200 text-xs sm:text-sm bg-white focus:outline-none focus:border-fptBlue focus:ring-2 focus:ring-blue-100 shadow-xs transition">
+                        <button type="button" onclick="clearSyllabusSearch()" id="syllabus-search-clear" class="absolute inset-y-0 right-0 pr-3 flex items-center text-slate-400 hover:text-slate-600 hidden">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+                        </button>
+                    </div>
+
+                    <!-- GPA Contribution Filter -->
+                    <div class="inline-flex p-1 rounded-xl bg-slate-100 border border-slate-200 self-start md:self-auto" id="syllabus-gpa-filter">
+                        <button type="button" onclick="setSyllabusGpaFilter('all')" data-filter="all" class="syllabus-filter-btn active px-3 py-1.5 text-xs font-bold rounded-lg transition bg-white text-fptBlue shadow-xs">Tất cả</button>
+                        <button type="button" onclick="setSyllabusGpaFilter('scored')" data-filter="scored" class="syllabus-filter-btn px-3 py-1.5 text-xs font-bold rounded-lg transition text-slate-600 hover:text-slate-900">Tính vào GPA</button>
+                        <button type="button" onclick="setSyllabusGpaFilter('condition')" data-filter="condition" class="syllabus-filter-btn px-3 py-1.5 text-xs font-bold rounded-lg transition text-slate-600 hover:text-slate-900">Không tính vào GPA / Môn điều kiện</button>
+                    </div>
+                </div>
+
+                <!-- Results Summary -->
+                <div class="flex items-center justify-between text-xs text-slate-500 font-medium px-1">
+                    <span id="syllabus-results-count">Đang tải danh sách môn học...</span>
+                    <span class="text-slate-400 hidden sm:inline">Nhấp vào thẻ môn học để xem cấu trúc tỷ trọng điểm chi tiết</span>
+                </div>
+            </div>
+
+            <!-- Course Cards Grid -->
+            <div id="syllabus-cards-container" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+                <!-- Rendered dynamically by renderSyllabusView() in app.js -->
+            </div>
+        </main>
+    </div>
+
+    <!-- ================================================================
+         CUTE CÓC VÀNG FLOATING MOTIVATION WIDGET (Bottom Right)
+         ================================================================ -->
+    <div id="mascot-widget" class="mascot-widget-container">
+        <!-- Motivational Speech Bubble -->
+        <div id="mascot-bubble" class="mascot-bubble hidden">
+            <div class="flex items-center justify-between pb-1 border-b border-sky-100">
+                <span class="font-extrabold text-fptBlue text-[11px] flex items-center gap-1.5">
+                    <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+                    Lưu Ý Học Tập K20
+                </span>
+                <button type="button" onclick="toggleMascotBubble()" class="text-slate-400 hover:text-slate-600 text-xs p-0.5 rounded transition" title="Thu gọn">
+                    ✕
+                </button>
+            </div>
+            <p id="mascot-quote-text" class="text-slate-700 font-medium">
+                Cố lên sinh viên K20! Hãy nhập đầy đủ điểm các bài thi để rinh ngay danh hiệu Cóc Vàng nhé! 🐸✨
+            </p>
+        </div>
+        <!-- Mascot Avatar Button -->
+        <button type="button" onclick="toggleMascotBubble()" class="mascot-avatar-btn" title="Nhấp để nhận lời chúc từ Cóc Vàng!">
+            <img src="assets/mascot_happy.svg" alt="Cóc Vàng FPTU" class="w-full h-full object-contain pointer-events-none">
+        </button>
+    </div>
+
+    <!-- ================================================================
+         MOBILE STICKY SUMMARY QUICK BAR (< 1024px Viewports)
+         ================================================================ -->
+    <div id="mobile-summary-bar" class="mobile-summary-bar">
+        <div class="flex items-center gap-2.5">
+            <img src="assets/mascot_happy.svg" alt="Cóc Vàng Mascot" class="w-8 h-8 object-contain flex-shrink-0">
+            <div>
+                <div class="flex items-center gap-1.5 leading-tight">
+                    <span class="text-[10px] text-slate-500 font-bold uppercase tracking-wider">TBM KỲ:</span>
+                    <span id="mobile-tbm-val" class="text-base font-black text-fptBlue">-</span>
+                </div>
+                <span id="mobile-honor-val" class="text-[11px] font-extrabold text-slate-700 block truncate max-w-[140px] sm:max-w-[200px]">
+                    Chưa đủ dữ liệu
+                </span>
+            </div>
+        </div>
+        <div class="flex items-center gap-2">
+            <button type="button" onclick="openExportModal()" class="px-3.5 py-2 rounded-xl text-xs font-bold text-white bg-fptBlue hover:bg-blue-700 shadow-sm flex items-center gap-1.5 transition active:scale-95">
+                <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 13a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+                Xuất Phiếu
+            </button>
+        </div>
+    </div>
+
+    <!-- ================================================================
+         GLOBAL FOOTER (Modern, Clean & Academic)
+         ================================================================ -->
+    <footer class="mt-auto border-t border-slate-200/90 bg-white/90 backdrop-blur-md relative z-10">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 sm:py-14">
+            <div class="grid grid-cols-1 md:grid-cols-12 gap-8 lg:gap-12 items-start">
+                
+                <!-- Col 1: Brand & Slogan (5 cols) -->
+                <div class="md:col-span-5 space-y-4">
+                    <div class="flex items-center gap-3">
+                        <div class="w-10 h-10 flex-shrink-0">
+                            <img src="assets/mascot_happy.svg" alt="Cóc Vàng Mascot" class="w-full h-full object-contain filter drop-shadow-xs">
+                        </div>
+                        <div>
+                            <div class="flex items-center gap-2">
+                                <span class="text-xl font-black tracking-tight text-slate-900" style="font-family: 'Plus Jakarta Sans', 'Inter', 'Be Vietnam Pro', sans-serif;">
+                                    FPTU&nbsp;<span class="text-fptBlue">SCORE</span><span class="text-slate-300 font-light mx-0.5">.</span><span class="text-fptOrange">CALC</span>
+                                </span>
+                                <span class="text-[10px] font-extrabold px-2 py-0.5 rounded-full bg-blue-50 text-fptBlue border border-blue-200">
+                                    BIT_SE_K20B
+                                </span>
+                            </div>
+                            <p class="text-xs text-slate-500 font-medium mt-0.5">Hệ thống hỗ trợ học tập &amp; mô phỏng điểm số sinh viên</p>
+                        </div>
+                    </div>
+                    <p class="text-xs sm:text-sm text-slate-600 leading-relaxed max-w-md">
+                        Công cụ mô phỏng bảng điểm 9 học kỳ, kiểm tra điều kiện qua môn và dự báo danh hiệu học thuật chuẩn quy chế Đại học FPT. Dành riêng cho sinh viên ngành Kỹ thuật Phần mềm (Khóa K20).
+                    </p>
+                    <div class="inline-flex items-center gap-2 text-xs font-semibold text-emerald-700 bg-emerald-50 px-3 py-1.5 rounded-xl border border-emerald-200">
+                        <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+                        <span>100% Stateless: Dữ liệu tính toán trong RAM, tự động xóa sạch khi F5.</span>
+                    </div>
+                </div>
+
+                <!-- Col 2: Navigation Links (3 cols) -->
+                <div class="md:col-span-3 space-y-3">
+                    <h4 class="text-xs font-extrabold uppercase tracking-wider text-slate-800">Điều hướng nhanh</h4>
+                    <ul class="space-y-2 text-xs sm:text-sm text-slate-600 font-medium">
+                        <li>
+                            <button type="button" onclick="switchView('home')" class="hover:text-fptBlue transition flex items-center gap-1.5">
+                                <svg class="w-3.5 h-3.5 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/></svg>
+                                <span>Trang chủ (Home)</span>
+                            </button>
+                        </li>
+                        <li>
+                            <button type="button" onclick="switchView('calc')" class="hover:text-fptBlue transition flex items-center gap-1.5">
+                                <svg class="w-3.5 h-3.5 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 7h6m0 10v-3m-3 3h.01M9 17h.01M9 14h.01M12 14h.01M15 11h.01M12 11h.01M9 11h.01M7 21h10a2 2 0 002-2V5a2 2 0 00-2-2H7a2 2 0 00-2 2v14a2 2 0 002 2z"/></svg>
+                                <span>Bảng tính điểm (Calculator)</span>
+                            </button>
+                        </li>
+                        <li>
+                            <button type="button" onclick="switchView('syllabus')" class="hover:text-fptBlue transition flex items-center gap-1.5">
+                                <svg class="w-3.5 h-3.5 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/></svg>
+                                <span>Tra cứu Syllabus 9 Học kỳ</span>
+                            </button>
+                        </li>
+                        <li>
+                            <button type="button" onclick="openExportModal()" class="hover:text-fptBlue transition flex items-center gap-1.5">
+                                <svg class="w-3.5 h-3.5 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/></svg>
+                                <span>Xuất Phiếu Báo Điểm A4</span>
+                            </button>
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- Col 3: Academic Regulations & Reference (4 cols) -->
+                <div class="md:col-span-4 space-y-3">
+                    <h4 class="text-xs font-extrabold uppercase tracking-wider text-slate-800">Cơ sở quy chế &amp; Đào tạo</h4>
+                    <p class="text-xs text-slate-500 leading-relaxed">
+                        Hệ thống đối chiếu theo Khung chương trình đào tạo ngành Kỹ thuật Phần mềm (K20) và Quy chế khảo thí FPT University:
+                    </p>
+                    <div class="space-y-1.5 text-xs text-slate-600">
+                        <div class="flex items-center gap-2">
+                            <span class="w-1.5 h-1.5 rounded-full bg-fptBlue"></span>
+                            <span>Điều kiện qua môn: <strong>FE &ge; 4.0</strong> và <strong>TBM &ge; 5.0</strong></span>
+                        </div>
+                        <div class="flex items-center gap-2">
+                            <span class="w-1.5 h-1.5 rounded-full bg-fptBlue"></span>
+                            <span>Môn điều kiện: <strong>Pass/Fail</strong> (Vovinam, Tiếng Anh, Lab, OJT)</span>
+                        </div>
+                        <div class="flex items-center gap-2">
+                            <span class="w-1.5 h-1.5 rounded-full bg-fptBlue"></span>
+                            <span>Công thức TBM: Trung bình cộng unweighted (không nhân tín chỉ)</span>
+                        </div>
+                        <div class="flex items-center gap-2">
+                            <span class="w-1.5 h-1.5 rounded-full bg-fptBlue"></span>
+                            <span>Tham khảo đề cương &amp; syllabus: <a href="https://flm.fpt.edu.vn" target="_blank" rel="noopener noreferrer" class="text-fptBlue hover:underline font-bold inline-flex items-center gap-1">flm.fpt.edu.vn <svg class="w-3 h-3 inline" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/></svg></a></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Bottom Copyright & Disclaimer -->
+            <div class="mt-8 pt-6 border-t border-slate-200/80 flex flex-col sm:flex-row items-center justify-between gap-3 text-xs text-slate-500">
+                <p>
+                    &copy; 2026 FPTU Score Calc. Phát triển cho cộng đồng sinh viên Đại học FPT.
+                </p>
+                <p class="text-[11px] text-slate-400">
+                    Kết quả mang tính mô phỏng tham khảo theo quy chế khảo thí FPTU.
+                </p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- ================================================================
+         MODAL 1: XUẤT PHIẾU BẢNG ĐIỂM DỰ ĐOÁN (Export Certificate Card)
+         ================================================================ -->
+    <div id="export-modal" onclick="handleExportModalBackdropClick(event)" class="fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-sm hidden items-start justify-center p-2 sm:p-4 overflow-y-auto">
+        <!-- Fixed Floating Close Button (always accessible when scrolling) -->
+        <button type="button" id="btn-close-export-modal-fixed" onclick="closeExportModal()" class="fixed top-3 right-3 sm:top-5 sm:right-5 z-[70] bg-white/95 backdrop-blur-md shadow-lg border border-slate-300 rounded-full p-2 text-slate-700 hover:text-slate-900 hover:bg-slate-100 transition cursor-pointer active:scale-95" title="Đóng bảng điểm (Esc)" aria-label="Đóng modal bảng điểm">
+            <svg class="w-5 h-5 sm:w-6 sm:h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+        </button>
+
+        <div class="bg-white rounded-2xl sm:rounded-3xl max-w-4xl w-full shadow-2xl border border-slate-200 overflow-hidden my-2 sm:my-8 animate-in fade-in zoom-in-95 duration-200 flex flex-col">
+            <div class="sticky top-0 z-20 p-3.5 sm:p-5 border-b border-slate-200 flex items-center justify-between bg-slate-50/95 backdrop-blur-md">
+                <div class="flex items-center gap-2 sm:gap-2.5">
+                    <img src="assets/mascot_happy.svg" alt="Mascot" class="w-6 h-6 object-contain">
+                    <h3 class="font-black text-sm sm:text-lg text-slate-800">Phiếu Bảng Điểm Dự Đoán FPTU</h3>
+                </div>
+                <div class="flex items-center gap-2">
+                    <!-- Mobile Fit Toggle Button -->
+                    <button type="button" id="btn-toggle-fit-mode" onclick="toggleCertificateFitMode()" class="sm:hidden text-xs font-bold text-fptBlue bg-blue-50 hover:bg-blue-100 border border-blue-200 px-2.5 py-1.5 rounded-xl transition flex items-center gap-1 active:scale-95">
+                        <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 8V4m0 0h4M4 4l5 5m11-1V4m0 0h-4m4 0l-5 5M4 16v4m0 0h4m-4 0l5-5m11 5l-5-5m5 5v-4m0 4h-4"/></svg>
+                        <span id="lbl-fit-mode">Vừa màn hình</span>
+                    </button>
+                    <button type="button" onclick="closeExportModal()" class="text-slate-400 hover:text-slate-600 p-1.5 rounded-xl hover:bg-slate-200/60 transition" title="Đóng modal">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Mobile Quick Hint Bar -->
+            <div id="mobile-card-hint" class="sm:hidden px-3 py-1.5 bg-blue-50/80 border-b border-blue-100 flex items-center justify-between text-[11px] text-fptBlue font-medium">
+                <span>💡 Vuốt ngang để xem đủ cột, hoặc bấm "Vừa màn hình"</span>
+            </div>
+
+            <!-- Card Render Container with responsive touch scroll -->
+            <div id="certificate-card-scroll-container" class="p-2 sm:p-6 bg-slate-100/70 overflow-x-auto">
+                <div id="certificate-card">
+                    <!-- Rendered dynamically by renderExportCard() in app.js -->
+                </div>
+            </div>
+
+            <!-- Modal Action Buttons -->
+            <div class="p-4 sm:p-5 border-t border-slate-200 bg-white flex flex-col sm:flex-row items-center justify-between gap-3">
+                <p class="text-xs text-slate-500 text-center sm:text-left">Định dạng PNG 2x sắc nét, tương thích mạng xã hội & in ấn.</p>
+                <div class="flex flex-wrap items-center gap-2 w-full sm:w-auto justify-end">
+                    <button type="button" id="btn-copy-clipboard" onclick="copyCertificateToClipboard()" class="flex-1 sm:flex-none inline-flex items-center justify-center gap-1.5 px-4 py-2.5 rounded-xl border border-slate-300 font-bold text-xs sm:text-sm text-slate-700 bg-white hover:bg-slate-50 transition active:scale-95">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 5H6a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2v-1M8 5a2 2 0 002 2h2a2 2 0 002-2M8 5a2 2 0 012-2h2a2 2 0 012 2m0 0h2a2 2 0 012 2v3m2 4H10m0 0l3-3m-3 3l3 3"/></svg>
+                        Sao chép ảnh
+                    </button>
+                    <button type="button" id="btn-download-pdf" onclick="downloadCertificatePdf()" class="flex-1 sm:flex-none inline-flex items-center justify-center gap-1.5 px-4 py-2.5 rounded-xl border border-blue-300 font-bold text-xs sm:text-sm text-fptBlue bg-blue-50/60 hover:bg-blue-100/60 transition active:scale-95">
+                        <svg class="w-4 h-4 text-fptBlue" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
+                        Tải file PDF (A4)
+                    </button>
+                    <button type="button" id="btn-download-png" onclick="downloadCertificatePng()" class="flex-1 sm:flex-none inline-flex items-center justify-center gap-1.5 px-5 py-2.5 rounded-xl font-bold text-xs sm:text-sm text-white bg-fptBlue hover:bg-blue-700 shadow-md shadow-blue-600/20 transition active:scale-95">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/></svg>
+                        Tải ảnh PNG
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ================================================================
+         MODAL 2: ĐỔI TEMPLATE CẤU TRÚC ĐIỂM CHO MÔN HỌC
+         ================================================================ -->
+    <div id="template-modal" class="fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-sm hidden items-center justify-center p-4">
+        <div class="bg-white rounded-3xl max-w-lg w-full shadow-2xl border border-slate-200 overflow-hidden">
+            <div class="p-5 border-b border-slate-100 flex items-center justify-between bg-slate-50">
+                <h3 class="font-bold text-base text-slate-800">Chọn Cấu Trúc Điểm (Template)</h3>
+                <button type="button" onclick="closeEditTemplateModal()" class="text-slate-400 hover:text-slate-600">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+                </button>
+            </div>
+            <div class="p-5 space-y-3">
+                <p class="text-xs text-slate-500 mb-2">Chọn nhanh cấu trúc đánh giá phù hợp với đề cương môn học của bạn:</p>
+                <button type="button" onclick="applyTemplateToCurrentSubject('theory_standard')" class="w-full text-left p-3.5 rounded-xl border border-slate-200 hover:border-blue-500 hover:bg-blue-50/30 transition group">
+                    <span class="font-bold text-sm text-slate-800 group-hover:text-fptBlue block">Lý thuyết chuẩn</span>
+                    <span class="text-xs text-slate-500">Progress Test (30%) + Assignment (30%) + Final Exam (40%)</span>
+                </button>
+                <button type="button" onclick="applyTemplateToCurrentSubject('practical_pe')" class="w-full text-left p-3.5 rounded-xl border border-slate-200 hover:border-blue-500 hover:bg-blue-50/30 transition group">
+                    <span class="font-bold text-sm text-slate-800 group-hover:text-fptBlue block">Lý thuyết + Thực hành PE</span>
+                    <span class="text-xs text-slate-500">Lab (10%) + PT (10%) + Assignment (20%) + PE (30%) + FE (30%)</span>
+                </button>
+                <button type="button" onclick="applyTemplateToCurrentSubject('online_coursera')" class="w-full text-left p-3.5 rounded-xl border border-slate-200 hover:border-blue-500 hover:bg-blue-50/30 transition group">
+                    <span class="font-bold text-sm text-slate-800 group-hover:text-fptBlue block">Môn Online Coursera</span>
+                    <span class="text-xs text-slate-500">Quizzes (30%) + Assignment/Capstone (30%) + Final Exam (40%)</span>
+                </button>
+                <button type="button" onclick="applyTemplateToCurrentSubject('project_swp')" class="w-full text-left p-3.5 rounded-xl border border-slate-200 hover:border-blue-500 hover:bg-blue-50/30 transition group">
+                    <span class="font-bold text-sm text-slate-800 group-hover:text-fptBlue block">Đồ án / Project SWP</span>
+                    <span class="text-xs text-slate-500">Quá trình Iterations (50%) + Bảo vệ đồ án (50%)</span>
+                </button>
+            </div>
+            <div class="p-4 bg-slate-50 border-t border-slate-100 text-right">
+                <button type="button" onclick="closeEditTemplateModal()" class="px-4 py-2 text-xs font-bold text-slate-600 hover:bg-slate-200 rounded-xl transition">
+                    Đóng
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ================================================================
+         MODAL 3: THÊM MÔN HỌC / CHỈNH SỬA CẤU TRÚC ĐIỂM (Component Schema Editor)
+         ================================================================ -->
+    <div id="add-subject-modal" class="fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-sm hidden items-center justify-center p-3 sm:p-4 overflow-y-auto">
+        <div class="bg-white rounded-3xl max-w-xl w-full shadow-2xl border border-slate-200 overflow-hidden my-4 sm:my-8 animate-in fade-in zoom-in-95 duration-200 flex flex-col max-h-[92vh]">
+            <form onsubmit="saveNewCustomSubject(event)" class="flex flex-col h-full overflow-hidden">
+                <input type="hidden" id="edit-subject-id" value="">
+                
+                <!-- Modal Header -->
+                <div class="p-5 border-b border-slate-100 flex items-center justify-between bg-slate-50 flex-shrink-0">
+                    <div class="flex items-center gap-2.5">
+                        <div class="w-8 h-8 rounded-xl bg-blue-100 text-fptBlue flex items-center justify-center font-bold text-sm">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/></svg>
+                        </div>
+                        <div>
+                            <h3 id="custom-modal-title" class="font-extrabold text-base text-slate-800">Thêm Môn Học Mới</h3>
+                            <p class="text-xs text-slate-500 font-medium">Tùy biến số cột điểm (1, 2, 3, 4, 5, 6...) và trọng số %</p>
+                        </div>
+                    </div>
+                    <button type="button" onclick="closeAddCustomSubjectModal()" class="text-slate-400 hover:text-slate-600 p-1.5 rounded-xl hover:bg-slate-200/60 transition" title="Đóng modal">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+                    </button>
+                </div>
+
+                <!-- Modal Body (Scrollable) -->
+                <div class="p-5 space-y-4 overflow-y-auto flex-1">
+                    <!-- Basic Info -->
+                    <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                        <div>
+                            <label class="block text-xs font-bold text-slate-700 mb-1">Mã môn <span class="text-rose-500">*</span></label>
+                            <input id="new-sub-code" type="text" required placeholder="PRN211" class="w-full px-3 py-2 rounded-xl border border-slate-300 font-bold uppercase text-sm focus:outline-none focus:border-fptBlue focus:ring-2 focus:ring-blue-100">
+                        </div>
+                        <div class="sm:col-span-2">
+                            <label class="block text-xs font-bold text-slate-700 mb-1">Tên môn học (Tiếng Việt) <span class="text-rose-500">*</span></label>
+                            <input id="new-sub-namevi" type="text" required placeholder="Lập trình .NET căn bản" class="w-full px-3 py-2 rounded-xl border border-slate-300 text-sm focus:outline-none focus:border-fptBlue focus:ring-2 focus:ring-blue-100">
+                        </div>
+                    </div>
+
+                    <!-- Hidden Credits Input (Preserved for Data Logic and Tests) -->
+                    <input type="hidden" id="new-sub-credits" value="3">
+
+                    <div>
+                        <label class="block text-xs font-bold text-slate-700 mb-1">Mẫu cấu trúc đánh giá nhanh:</label>
+                        <select id="new-sub-template" onchange="loadPresetComponents(this.value)" class="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 text-xs font-semibold focus:outline-none focus:border-fptBlue bg-white shadow-xs">
+                            <option value="theory">Lý thuyết chuẩn (Progress Test 30%, Assignment 30%, Final Exam 40%)</option>
+                            <option value="practical">Lý thuyết & Thực hành PE (Lab 10%, PT 10%, Ass 20%, PE 30%, FE 30%)</option>
+                            <option value="coursera">Môn Online Coursera (Quizzes 30%, Assignment 30%, Final Exam 40%)</option>
+                            <option value="project">Đồ án / Project SWP (Quá trình Iterations 50%, Bảo vệ 50%)</option>
+                        </select>
+                    </div>
+
+                    <div class="flex items-center gap-2 pt-1">
+                        <input id="new-sub-isscored" type="checkbox" checked class="w-4 h-4 text-fptBlue rounded border-slate-300 focus:ring-blue-500">
+                        <label for="new-sub-isscored" class="text-xs font-semibold text-slate-700 cursor-pointer">Môn này CÓ tính điểm vào TBM học kỳ</label>
+                    </div>
+
+                    <!-- Components Section -->
+                    <div class="pt-3 border-t border-slate-100">
+                        <div class="flex items-center justify-between mb-2">
+                            <div>
+                                <span class="text-xs font-extrabold text-slate-800">Cột điểm thành phần:</span>
+                                <p class="text-[11px] text-slate-500">Chỉnh tên, % trọng số, số bài con (cột con) và đánh dấu bài thi cuối kỳ (FE)</p>
+                            </div>
+                            <span id="modal-total-weight" class="text-xs font-extrabold px-2.5 py-1 rounded-full bg-emerald-100 text-emerald-800 whitespace-nowrap inline-flex items-center gap-1 flex-shrink-0">Tổng trọng số: 100% (Chuẩn)</span>
+                        </div>
+
+                        <!-- Dynamic List -->
+                        <div id="custom-components-list" class="space-y-2 max-h-56 overflow-y-auto pr-1"></div>
+
+                        <button type="button" onclick="addCustomComponentRow()" class="mt-2.5 w-full py-2 px-3 rounded-xl border border-dashed border-blue-300 text-xs font-bold text-fptBlue hover:bg-blue-50/50 flex items-center justify-center gap-1.5 transition">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/></svg>
+                            <span>+ Thêm cột điểm thành phần</span>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Modal Footer -->
+                <div class="p-4 bg-slate-50 border-t border-slate-100 flex items-center justify-end gap-2 flex-shrink-0">
+                    <button type="button" onclick="closeAddCustomSubjectModal()" class="px-4 py-2 text-xs font-bold text-slate-600 hover:bg-slate-200 rounded-xl transition">
+                        Hủy
+                    </button>
+                    <button type="submit" id="btn-save-custom-subject" class="px-5 py-2 text-xs font-bold text-white bg-fptBlue hover:bg-blue-700 rounded-xl shadow-md transition">
+                        Lưu Môn Học
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- ================================================================
+         CELEBRATION MODAL: CÓC VÀNG / TOP 100 HONORS
+         ================================================================ -->
+    <div id="celebration-modal" class="fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-sm hidden items-center justify-center p-4">
+        <div class="bg-white rounded-3xl max-w-md w-full shadow-2xl border-2 border-amber-300 overflow-hidden text-center p-6 relative">
+            <div class="absolute -right-8 -top-8 w-32 h-32 bg-amber-100 rounded-full blur-2xl pointer-events-none"></div>
+            
+            <!-- Celebratory Mascot Image -->
+            <div class="w-36 h-36 mx-auto mb-2 relative">
+                <img src="assets/mascot_celebrate.svg" alt="Chúc Mừng Cóc Vàng!" class="w-full h-full object-contain filter drop-shadow-md">
+            </div>
+
+            <span class="inline-block px-3 py-1 rounded-full text-xs font-black uppercase tracking-wider bg-amber-100 text-amber-900 border border-amber-300 mb-2">
+                🌟 VINH DANH HỌC KỲ 🌟
+            </span>
+            <h3 id="celebration-title" class="text-2xl font-black text-amber-950 tracking-tight">
+                CHÚC MỪNG CÓC VÀNG! 🐸🏆
+            </h3>
+            <p id="celebration-desc" class="text-xs sm:text-sm text-slate-600 mt-2 leading-relaxed px-2">
+                Điểm TBM tuyệt vời! Bạn có xác suất cực cao đạt Cóc Vàng danh giá của khối ngành Kỹ thuật Phần mềm kỳ này!
+            </p>
+
+            <div class="mt-6 flex items-center justify-center gap-3">
+                <button type="button" onclick="closeCelebrationModal()" class="px-5 py-2.5 rounded-xl font-bold text-xs sm:text-sm bg-slate-100 text-slate-700 hover:bg-slate-200 transition">
+                    Đóng
+                </button>
+                <button type="button" onclick="closeCelebrationModal(); openExportModal();" class="px-5 py-2.5 rounded-xl font-extrabold text-xs sm:text-sm text-white bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-600 hover:to-orange-600 shadow-md shadow-orange-500/20 transition active:scale-95">
+                    Khoe Phiếu Điểm Ngay 📸
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ================================================================
+         MODAL 4: SYLLABUS COURSE DETAIL POPUP (R4)
+         ================================================================ -->
+    <div id="syllabus-detail-modal" class="fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-sm hidden items-center justify-center p-3 sm:p-4 overflow-y-auto" onclick="handleSyllabusModalBackdropClick(event)">
+        <div class="bg-white rounded-3xl max-w-2xl w-full shadow-2xl border border-slate-200 overflow-hidden my-4 sm:my-8 animate-in fade-in zoom-in-95 duration-200">
+            <!-- Header -->
+            <div class="p-5 border-b border-slate-200 flex items-center justify-between bg-slate-50">
+                <div class="flex items-center gap-3">
+                    <div class="w-10 h-10 rounded-xl bg-blue-100/70 text-fptBlue flex items-center justify-center font-black text-sm">
+                        <svg class="w-5 h-5 text-fptBlue" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/></svg>
+                    </div>
+                    <div>
+                        <h3 id="modal-sub-title" class="font-black text-base sm:text-lg text-slate-800">Chi Tiết Đề Cương Môn Học</h3>
+                        <p id="modal-sub-subtitle" class="text-xs text-slate-500 font-medium">Syllabus FPT University K20B</p>
+                    </div>
+                </div>
+                <button type="button" id="syllabus-detail-close-btn" onclick="closeSyllabusDetailModal()" class="text-slate-400 hover:text-slate-600 p-1.5 rounded-xl hover:bg-slate-200/60 transition" title="Đóng modal (Esc)">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+                </button>
+            </div>
+
+            <!-- Body -->
+            <div id="syllabus-detail-content" class="p-5 sm:p-6 space-y-5 max-h-[75vh] overflow-y-auto">
+                <!-- Dynamically populated by openSyllabusDetailModal() in app.js -->
+            </div>
+
+            <!-- Footer -->
+            <div class="p-4 bg-slate-50 border-t border-slate-200 flex items-center justify-between">
+                <span class="text-xs text-slate-500">Chuẩn quy chế khảo thí FPTU (QĐ 1140/QĐ-ĐHFPT)</span>
+                <button type="button" onclick="closeSyllabusDetailModal()" class="px-5 py-2 text-xs font-bold text-slate-700 bg-white border border-slate-300 hover:bg-slate-100 rounded-xl transition">
+                    Đóng
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- UI Helper Script: Floating Mascot & Mobile Summary Sync -->
+    <script>
+        // Mascot Bubble Toggle
+        function toggleMascotBubble() {
+            const bubble = document.getElementById("mascot-bubble");
+            if (bubble) {
+                bubble.classList.toggle("hidden");
+            }
+        }
+
+        // Random motivational quotes for mascot
+        const MASCOT_TIPS = [
+            "Hệ thống dự phóng điểm theo chuẩn Syllabus K20 (BIT_SE_K20B).",
+            "Điểm TBM học kỳ tính theo trung bình cộng các môn có tính điểm.",
+            "Điều kiện qua môn: Điểm thi FE >= 4.0 và tổng kết môn >= 5.0.",
+            "Kỳ 6 (OJT) đánh dấu Pass/Not Pass, không tính vào điểm TBM.",
+            "Kỳ 8 và Kỳ 9 là đồ án tốt nghiệp, không xét giải Cóc Vàng."
+        ];
+        
+        function rotateMascotQuote() {
+            const textElem = document.getElementById("mascot-quote-text");
+            if (textElem) {
+                const randomTip = MASCOT_TIPS[Math.floor(Math.random() * MASCOT_TIPS.length)];
+                textElem.innerText = randomTip;
+            }
+        }
+
+        // Close celebration modal helper
+        function closeCelebrationModal() {
+            const modal = document.getElementById("celebration-modal");
+            if (modal) {
+                modal.classList.add("hidden");
+                modal.classList.remove("flex");
+            }
+        }
+
+        // Synchronize Mobile Summary Bar with Main Dashboard via MutationObserver
+        document.addEventListener("DOMContentLoaded", () => {
+            const tbmElem = document.getElementById("summary-tbm");
+            const honorElem = document.getElementById("summary-honor-badge");
+            const mobTbm = document.getElementById("mobile-tbm-val");
+            const mobHonor = document.getElementById("mobile-honor-val");
+
+            function syncMobileBar() {
+                if (tbmElem && mobTbm) mobTbm.innerText = tbmElem.innerText;
+                if (honorElem && mobHonor) mobHonor.innerText = honorElem.innerText;
+            }
+
+            if (tbmElem) {
+                const observer = new MutationObserver(syncMobileBar);
+                observer.observe(tbmElem, { childList: true, characterData: true, subtree: true });
+            }
+            if (honorElem) {
+                const observer = new MutationObserver(syncMobileBar);
+                observer.observe(honorElem, { childList: true, characterData: true, subtree: true });
+            }
+
+            // Periodic quote rotation every 30s
+            // Periodic quote rotation disabled
+        });
+    </script>
+
+    <!-- Core Scripts -->
+    <script src="data.js"></script>
+    <script src="app.js"></script>
+</body>
+</html>

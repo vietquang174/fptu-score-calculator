@@ -1,0 +1,643 @@
+/* ================================================================
+   FPT UNIVERSITY SCORE CALCULATOR - BIT_SE_K20B
+   UI Design System, Mascot Theme & Mobile Responsiveness
+   ================================================================ */
+
+:root {
+    /* Primary Blue Palette (Elegant, Academic & Minimalist) */
+    --fpt-blue: #0066B2;
+    --fpt-blue-dark: #1E40AF;
+    --fpt-blue-light: #0284C7;
+    --fpt-blue-hover: #00528F;
+    --fpt-blue-subtle: #F0F7FF;
+    --fpt-blue-border: #BAE6FD;
+
+    /* Secondary Subtle Accents */
+    --fpt-orange: #F27024;
+    --fpt-orange-hover: #EA580C;
+    --fpt-orange-subtle: #FFF7ED;
+    --fpt-orange-border: #FED7AA;
+
+    --fpt-gold: #FFB800;
+    --fpt-gold-dark: #D97706;
+    --fpt-gold-subtle: #FEF9C3;
+
+    --fpt-green: #10B981;
+    --fpt-green-hover: #059669;
+    --fpt-green-subtle: #ECFDF5;
+
+    --fpt-red: #EF4444;
+    --fpt-red-subtle: #FEF2F2;
+
+    /* Neutral & Background Tokens */
+    --fpt-gray-bg: #F8FAFC;
+    --fpt-surface: #FFFFFF;
+    --fpt-border: #E2E8F0;
+    --fpt-border-subtle: #F1F5F9;
+    --fpt-text-main: #0F172A;
+    --fpt-text-muted: #64748B;
+    --fpt-text-light: #94A3B8;
+
+    /* Shadows */
+    --shadow-soft: 0 2px 10px -2px rgba(15, 23, 42, 0.06), 0 1px 3px -1px rgba(15, 23, 42, 0.04);
+    --shadow-card: 0 4px 20px -2px rgba(0, 102, 178, 0.08), 0 2px 6px -1px rgba(0, 0, 0, 0.04);
+    --shadow-elevated: 0 20px 35px -8px rgba(0, 102, 178, 0.15), 0 8px 16px -4px rgba(0, 0, 0, 0.06);
+}
+
+/* Base resets & typography */
+html {
+    scroll-behavior: smooth;
+    -webkit-text-size-adjust: 100%;
+}
+
+body {
+    background-color: var(--fpt-gray-bg);
+    color: var(--fpt-text-main);
+    font-family: 'Plus Jakarta Sans', 'Inter', 'Be Vietnam Pro', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    overflow-x: hidden;
+    position: relative;
+    background-image: 
+        linear-gradient(to right, rgba(148, 163, 184, 0.08) 1px, transparent 1px),
+        linear-gradient(to bottom, rgba(148, 163, 184, 0.08) 1px, transparent 1px);
+    background-size: 32px 32px;
+}
+
+
+/* Custom Scrollbars */
+::-webkit-scrollbar {
+    width: 7px;
+    height: 7px;
+}
+::-webkit-scrollbar-track {
+    background: #F1F5F9;
+}
+::-webkit-scrollbar-thumb {
+    background: #CBD5E1;
+    border-radius: 9999px;
+}
+::-webkit-scrollbar-thumb:hover {
+    background: #94A3B8;
+}
+
+/* Hide scrollbar for horizontally scrollable tab strips */
+.no-scrollbar::-webkit-scrollbar {
+    display: none;
+}
+.no-scrollbar {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+}
+
+/* ================================================================
+   Mobile-Optimized Touch Inputs (375px - 430px)
+   ================================================================ */
+
+/* Hide Spin Buttons for clean input on mobile screens */
+input[type="number"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+input[type="number"] {
+    -moz-appearance: textfield;
+}
+
+/* Score Input styling */
+.score-input {
+    min-height: 44px; /* Minimum 44px touch target height */
+    font-size: 15px;
+    font-weight: 700;
+    text-align: center;
+    border-radius: 10px;
+    border: 1.5px solid #CBD5E1;
+    background-color: #FFFFFF;
+    color: var(--fpt-text-main);
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+.score-input:focus {
+    outline: none;
+    border-color: var(--fpt-blue) !important;
+    box-shadow: 0 0 0 3px rgba(0, 102, 178, 0.16) !important;
+    background-color: #FFFFFF !important;
+}
+
+/* Missing Input Warning Glow */
+.input-missing {
+    border-color: #CBD5E1 !important;
+    background-color: #FFFFFF !important;
+}
+.input-missing:focus {
+    border-color: var(--fpt-blue) !important;
+    box-shadow: 0 0 0 3px rgba(0, 102, 178, 0.2) !important;
+}
+
+/* Invalid / Over 10 / Under 0 Glow */
+.input-invalid {
+    border-color: #EF4444 !important;
+    background-color: #FEF2F2 !important;
+    color: #DC2626 !important;
+}
+
+/* Pulse animation for missing badges */
+@keyframes softPulse {
+    0%, 100% {
+        opacity: 1;
+        transform: scale(1);
+    }
+    50% {
+        opacity: 0.88;
+        transform: scale(1.02);
+    }
+}
+.pulse-warning {
+    animation: softPulse 2s infinite ease-in-out;
+}
+
+/* Golden Shimmer for Top 100 & Cóc Vàng */
+@keyframes shimmerGold {
+    0% {
+        background-position: -200% center;
+    }
+    100% {
+        background-position: 200% center;
+    }
+}
+.shimmer-badge {
+    background: linear-gradient(90deg, #F59E0B 0%, #FBBF24 25%, #FFFBEB 50%, #FBBF24 75%, #F59E0B 100%);
+    background-size: 200% auto;
+    animation: shimmerGold 3.5s linear infinite;
+    color: #78350F;
+    font-weight: 800;
+}
+
+/* Active Semester Tab */
+.sem-tab-active {
+    background: linear-gradient(135deg, var(--fpt-blue) 0%, var(--fpt-blue-dark) 100%) !important;
+    color: #FFFFFF !important;
+    border-color: var(--fpt-blue-dark) !important;
+    box-shadow: 0 4px 14px rgba(0, 102, 178, 0.28) !important;
+    font-weight: 800 !important;
+}
+
+/* Floating Confetti Canvas */
+#confetti-canvas {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    pointer-events: none;
+    z-index: 99999;
+}
+
+/* ================================================================
+   Cute Cóc Vàng Floating Motivation Widget
+   ================================================================ */
+
+@keyframes mascotBounce {
+    0%, 100% {
+        transform: translateY(0);
+    }
+    50% {
+        transform: translateY(-6px);
+    }
+}
+
+.mascot-widget-container {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    z-index: 40;
+    display: flex;
+    align-items: flex-end;
+    gap: 10px;
+    transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.mascot-avatar-btn {
+    width: 60px;
+    height: 60px;
+    border-radius: 20px;
+    background: linear-gradient(135deg, #FFFFFF 0%, #F0F7FF 100%);
+    border: 2px solid #BAE6FD;
+    box-shadow: 0 10px 25px -5px rgba(0, 102, 178, 0.25);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    animation: mascotBounce 4s ease-in-out infinite;
+    position: relative;
+    padding: 2px;
+}
+
+.mascot-avatar-btn:hover {
+    transform: scale(1.08) translateY(-2px);
+    box-shadow: 0 14px 28px -4px rgba(0, 102, 178, 0.35);
+}
+
+.mascot-bubble {
+    background: #FFFFFF;
+    border: 1.5px solid #BAE6FD;
+    border-radius: 18px;
+    padding: 10px 14px;
+    box-shadow: 0 10px 25px -5px rgba(15, 23, 42, 0.12);
+    max-width: 260px;
+    font-size: 12px;
+    line-height: 1.4;
+    color: #1E293B;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    animation: fadeIn 0.3s ease-out;
+}
+
+.mascot-bubble::after {
+    content: "";
+    position: absolute;
+    bottom: 16px;
+    right: -8px;
+    width: 14px;
+    height: 14px;
+    background: #FFFFFF;
+    border-right: 1.5px solid #BAE6FD;
+    border-top: 1.5px solid #BAE6FD;
+    transform: rotate(45deg);
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(6px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* ================================================================
+   Mobile Sticky Quick Summary Bar (< 1024px)
+   ================================================================ */
+.mobile-summary-bar {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    z-index: 35;
+    background: rgba(255, 255, 255, 0.94);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border-top: 1px solid #E2E8F0;
+    padding: 10px 16px;
+    box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.06);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    transition: transform 0.3s ease;
+}
+
+@media (min-width: 1024px) {
+    .mobile-summary-bar {
+        display: none !important;
+    }
+}
+
+/* ================================================================
+   Continuous Headline Text Gradient Animation (R2 Specification)
+   Smooth, slow CSS gradient shifting through deep blue, sky blue,
+   and soft silver tones without visual snapping.
+   ================================================================ */
+@keyframes textGradientContinuous {
+    0% {
+        background-position: 0% center;
+    }
+    100% {
+        background-position: 200% center;
+    }
+}
+
+.text-gradient-animated {
+    background: linear-gradient(
+        90deg,
+        #00528F 0%,
+        #0284C7 22%,
+        #CBD5E1 45%,
+        #38BDF8 68%,
+        #00528F 100%
+    );
+    background-size: 200% auto;
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    color: transparent;
+    animation: textGradientContinuous 9s linear infinite;
+    display: inline-block;
+}
+
+/* ================================================================
+   Home Landing Hero & Mascot Showcase (PrepEdu inspired - R1)
+   ================================================================ */
+.home-hero-prep {
+    position: relative;
+    background: radial-gradient(circle at 50% 60%, #0B63E5 0%, #0047BA 45%, #00266B 100%);
+    overflow: hidden;
+    color: #FFFFFF;
+}
+
+.radial-ring {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    border-radius: 9999px;
+    border: 1.5px solid rgba(255, 255, 255, 0.08);
+    pointer-events: none;
+}
+.radial-ring-1 { width: 340px; height: 340px; }
+.radial-ring-2 { width: 560px; height: 560px; }
+.radial-ring-3 { width: 820px; height: 820px; }
+.radial-ring-4 { width: 1140px; height: 1140px; }
+
+.btn-glowing-cta {
+    background: #FFFFFF;
+    color: #0047BA;
+    box-shadow: 0 0 25px rgba(255, 255, 255, 0.8), 0 0 50px rgba(56, 189, 248, 0.45);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    min-height: 48px;
+}
+.btn-glowing-cta:hover {
+    background: #F8FAFC;
+    box-shadow: 0 0 35px rgba(255, 255, 255, 0.95), 0 0 65px rgba(56, 189, 248, 0.65);
+    transform: translateY(-2px);
+}
+.btn-glowing-cta:active {
+    transform: scale(0.97);
+}
+
+.inline-mascot-pill {
+    display: inline-flex;
+    align-items: center;
+    vertical-align: middle;
+    background: rgba(255, 255, 255, 0.95);
+    border-radius: 9999px;
+    padding: 3px 10px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.18);
+    margin: 0 4px;
+}
+
+/* ================================================================
+   Export Certificate Card & Modal Sandbox (Standard Vertical A4 - R3)
+   ================================================================ */
+
+#certificate-card {
+    width: 794px;
+    min-width: 794px; /* Standard A4 96 DPI width (210mm) */
+    min-height: 1123px; /* Standard A4 96 DPI height (297mm) */
+    aspect-ratio: 210 / 297;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+        margin: 0 auto;
+    background: #FFFFFF;
+    border-radius: 0px !important;
+    box-shadow: 0 10px 30px rgba(15, 23, 42, 0.08);
+    border: 2px solid #0066B2 !important;
+    position: relative;
+    overflow: visible;
+}
+
+#certificate-card table {
+    border-collapse: separate !important;
+    border-spacing: 0 !important;
+    border: 1.5px solid #CBD5E1 !important;
+    border-radius: 6px !important;
+    overflow: hidden !important;
+    width: 100% !important;
+}
+
+#certificate-card table th {
+    border-right: 1px solid #334155 !important;
+    border-bottom: 1px solid #CBD5E1 !important;
+    vertical-align: middle !important;
+    padding-top: 10px !important;
+    padding-bottom: 10px !important;
+}
+
+#certificate-card table th:last-child {
+    border-right: none !important;
+}
+
+#certificate-card table td {
+    vertical-align: middle !important;
+    padding-top: 11px !important;
+    padding-bottom: 11px !important;
+    border-right: 1px solid #E2E8F0 !important;
+    border-bottom: 1px solid #E2E8F0 !important;
+}
+
+#certificate-card table td:last-child {
+    border-right: none !important;
+}
+
+#certificate-card table tr:last-child td {
+    border-bottom: none !important;
+}
+
+#certificate-card table td .cell-wrapper {
+    display: flex;
+    align-items: center;
+    min-height: 40px;
+}
+
+#certificate-card table td .cell-wrapper-center {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 40px;
+}
+
+#certificate-card::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 5px;
+    background: #0066B2;
+    z-index: 10;
+}
+
+/* Official Cóc Vàng certification stamp on export card */
+#certificate-card::after {
+    content: "";
+    position: absolute;
+    right: 32px;
+    bottom: 45px;
+    width: 135px;
+    height: 135px;
+    background-image: url('assets/mascot_stamp.svg');
+    background-size: contain;
+    background-repeat: no-repeat;
+    opacity: 0.22;
+    pointer-events: none;
+    user-select: none;
+    transform: rotate(-8deg);
+    z-index: 25 !important;
+}
+
+/* Subtle background text watermark */
+.card-watermark {
+    position: absolute;
+    right: -10px;
+    bottom: -20px;
+    font-size: 140px;
+    font-weight: 900;
+    color: rgba(0, 102, 178, 0.03);
+    user-select: none;
+    pointer-events: none;
+    font-style: italic;
+    letter-spacing: -4px;
+}
+
+/* ================================================================
+   Touch Targets & Viewport Enhancements (375px - 430px)
+   ================================================================ */
+@media (max-width: 640px) {
+    /* Touch Target enforcement: >= 44px on mobile buttons */
+    button, input, select {
+        min-height: 44px;
+    }
+    
+    .mascot-widget-container {
+        bottom: 74px; /* Float above mobile summary bar */
+        right: 12px;
+    }
+
+    .mascot-bubble {
+        max-width: 210px;
+        font-size: 11.5px;
+    }
+
+    .mascot-avatar-btn {
+        width: 50px;
+        height: 50px;
+        border-radius: 16px;
+    }
+
+    /* Keep comfortable padding on small screens */
+    /* certificate-card full A4 padding maintained */
+}
+
+
+/* Hide floating cheerleader toad widget per user feedback */
+.mascot-widget-container, #mascot-widget, #mascot-bubble {
+    display: none !important;
+    visibility: hidden !important;
+    pointer-events: none !important;
+}
+
+/* ================================================================
+   Subtle Floating Mesh Gradient Ambient Motion
+   ================================================================ */
+@keyframes floatOrb1 {
+    0%, 100% { transform: translate(0px, 0px) scale(1); }
+    33% { transform: translate(80px, -60px) scale(1.12); }
+    66% { transform: translate(-60px, 70px) scale(0.92); }
+}
+@keyframes floatOrb2 {
+    0%, 100% { transform: translate(0px, 0px) scale(1); }
+    33% { transform: translate(-70px, 60px) scale(1.08); }
+    66% { transform: translate(60px, -50px) scale(0.94); }
+}
+.ambient-mesh-glow {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    pointer-events: none;
+    z-index: -1;
+    overflow: hidden;
+}
+.ambient-glow-orb-1 {
+    position: absolute;
+    top: -5%;
+    left: 15%;
+    width: 520px;
+    height: 520px;
+    border-radius: 9999px;
+    background: radial-gradient(circle, rgba(0, 102, 178, 0.14) 0%, rgba(2, 132, 199, 0.05) 50%, transparent 75%);
+    filter: blur(80px);
+    animation: floatOrb1 22s ease-in-out infinite;
+    will-change: transform;
+}
+.ambient-glow-orb-2 {
+    position: absolute;
+    top: 40%;
+    right: 10%;
+    width: 480px;
+    height: 480px;
+    border-radius: 9999px;
+    background: radial-gradient(circle, rgba(2, 132, 199, 0.12) 0%, rgba(56, 189, 248, 0.04) 50%, transparent 75%);
+    filter: blur(80px);
+    animation: floatOrb2 26s ease-in-out infinite alternate;
+    will-change: transform;
+}
+
+/* ================================================================
+   A4 Document Print Stylesheet (@media print)
+   ================================================================ */
+@media print {
+    @page {
+        size: A4 portrait;
+        margin: 10mm;
+    }
+    body {
+        background: #FFFFFF !important;
+        background-image: none !important;
+        padding: 0 !important;
+        margin: 0 !important;
+    }
+    body > *:not(#export-modal) {
+        display: none !important;
+    }
+    .ambient-mesh-glow,
+    #mascot-widget,
+    #mobile-summary-bar {
+        display: none !important;
+    }
+    #export-modal {
+        position: static !important;
+        display: block !important;
+        background: transparent !important;
+        padding: 0 !important;
+        margin: 0 !important;
+        overflow: visible !important;
+    }
+    #export-modal > div {
+        box-shadow: none !important;
+        border: none !important;
+        max-width: 100% !important;
+        margin: 0 !important;
+        padding: 0 !important;
+        border-radius: 0 !important;
+    }
+    #export-modal .border-b,
+    #export-modal .border-t,
+    #export-modal button {
+        display: none !important;
+    }
+    #certificate-card {
+        width: 100% !important;
+        max-width: 100% !important;
+        border: 1px solid #E2E8F0 !important;
+        box-shadow: none !important;
+        margin: 0 !important;
+        border-radius: 0 !important;
+    }
+}
