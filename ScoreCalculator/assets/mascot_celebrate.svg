@@ -1,0 +1,179 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 260 260" width="100%" height="100%" fill="none">
+  <defs>
+    <!-- Skin Gradients -->
+    <linearGradient id="celSkinGrad" x1="40" y1="50" x2="200" y2="200" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#FFC107"/>
+      <stop offset="40%" stop-color="#FFA000"/>
+      <stop offset="85%" stop-color="#F57C00"/>
+      <stop offset="100%" stop-color="#E65100"/>
+    </linearGradient>
+    <radialGradient id="celBellyGrad" cx="130" cy="165" r="45" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#FFFDE7"/>
+      <stop offset="70%" stop-color="#FFE082"/>
+      <stop offset="100%" stop-color="#FFCA28"/>
+    </radialGradient>
+    <linearGradient id="goldTrophyGrad" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#FFF9C4"/>
+      <stop offset="30%" stop-color="#FFD54F"/>
+      <stop offset="70%" stop-color="#FFB300"/>
+      <stop offset="100%" stop-color="#FF8F00"/>
+    </linearGradient>
+    <linearGradient id="shirtGrad2" x1="80" y1="160" x2="180" y2="250" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#FF6F00"/>
+      <stop offset="100%" stop-color="#D84315"/>
+    </linearGradient>
+    <linearGradient id="laurelGrad" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#FFE082"/>
+      <stop offset="50%" stop-color="#FFB300"/>
+      <stop offset="100%" stop-color="#FF8F00"/>
+    </linearGradient>
+    <filter id="celDropShadow" x="-10%" y="-10%" width="125%" height="125%">
+      <feDropShadow dx="0" dy="4" stdDeviation="5" flood-color="#78350F" flood-opacity="0.2"/>
+    </filter>
+  </defs>
+
+  <!-- Radiating Burst behind mascot -->
+  <g opacity="0.25">
+    <circle cx="130" cy="120" r="95" fill="#FEF3C7"/>
+    <path d="M 130 15 L 138 95 L 130 120 L 122 95 Z" fill="#F59E0B"/>
+    <path d="M 130 225 L 138 145 L 130 120 L 122 145 Z" fill="#F59E0B"/>
+    <path d="M 25 120 L 95 112 L 120 130 L 95 128 Z" fill="#F59E0B"/>
+    <path d="M 235 120 L 165 112 L 140 130 L 165 128 Z" fill="#F59E0B"/>
+    <path d="M 50 45 L 110 95 L 130 120 L 95 110 Z" fill="#F59E0B"/>
+    <path d="M 210 45 L 150 95 L 130 120 L 165 110 Z" fill="#F59E0B"/>
+    <path d="M 50 195 L 105 145 L 130 120 L 95 130 Z" fill="#F59E0B"/>
+    <path d="M 210 195 L 155 145 L 130 120 L 165 130 Z" fill="#F59E0B"/>
+  </g>
+
+  <!-- Confetti ribbons & stars -->
+  <g opacity="0.85">
+    <circle cx="45" cy="50" r="3.5" fill="#EF4444"/>
+    <circle cx="70" cy="30" r="2.5" fill="#3B82F6"/>
+    <circle cx="190" cy="35" r="3.5" fill="#10B981"/>
+    <circle cx="215" cy="55" r="3" fill="#F59E0B"/>
+    <circle cx="30" cy="110" r="2.5" fill="#8B5CF6"/>
+    <circle cx="230" cy="115" r="3" fill="#EC4899"/>
+    <!-- Confetti strips -->
+    <path d="M 55 40 Q 60 48 52 56" stroke="#F59E0B" stroke-width="2.5" stroke-linecap="round"/>
+    <path d="M 205 45 Q 198 55 208 62" stroke="#3B82F6" stroke-width="2.5" stroke-linecap="round"/>
+    <path d="M 35 85 Q 42 92 38 100" stroke="#10B981" stroke-width="2" stroke-linecap="round"/>
+    <path d="M 225 85 Q 218 92 222 102" stroke="#EF4444" stroke-width="2" stroke-linecap="round"/>
+  </g>
+
+  <!-- Ground Shadow -->
+  <ellipse cx="130" cy="246" rx="70" ry="9" fill="#0F172A" fill-opacity="0.12"/>
+
+  <!-- Main Mascot Group -->
+  <g filter="url(#celDropShadow)">
+
+    <!-- Raised Left Arm Holding Golden Ribbon / Victory Fist -->
+    <path d="M 76 162 C 55 145 35 120 45 105 C 52 95 68 102 72 118 C 76 132 86 150 92 165 Z" fill="url(#celSkinGrad)" stroke="#B44000" stroke-width="2.5"/>
+    <circle cx="46" cy="102" r="8" fill="#FFCA28" stroke="#B44000" stroke-width="2"/>
+    <circle cx="56" cy="98" r="7" fill="#FFCA28" stroke="#B44000" stroke-width="2"/>
+    <circle cx="38" cy="110" r="6.5" fill="#FFCA28" stroke="#B44000" stroke-width="2"/>
+
+    <!-- Raised Right Arm Holding Golden Trophy -->
+    <path d="M 184 162 C 205 145 225 120 215 105 C 208 95 192 102 188 118 C 184 132 174 150 168 165 Z" fill="url(#celSkinGrad)" stroke="#B44000" stroke-width="2.5"/>
+    <circle cx="214" cy="102" r="8" fill="#FFCA28" stroke="#B44000" stroke-width="2"/>
+    <circle cx="204" cy="98" r="7" fill="#FFCA28" stroke="#B44000" stroke-width="2"/>
+    <circle cx="222" cy="110" r="6.5" fill="#FFCA28" stroke="#B44000" stroke-width="2"/>
+
+    <!-- Golden Trophy Cup in hand / Center stage -->
+    <g transform="translate(196, 60)">
+      <!-- Cup Body -->
+      <path d="M 12 10 L 36 10 C 36 28 30 38 24 42 C 18 38 12 28 12 10 Z" fill="url(#goldTrophyGrad)" stroke="#B45309" stroke-width="1.8"/>
+      <!-- Handles -->
+      <path d="M 12 14 C 4 14 4 28 12 28" stroke="#D97706" stroke-width="2" fill="none"/>
+      <path d="M 36 14 C 44 14 44 28 36 28" stroke="#D97706" stroke-width="2" fill="none"/>
+      <!-- Stem & Base -->
+      <rect x="22" y="42" width="4" height="8" fill="#F59E0B" stroke="#B45309" stroke-width="1"/>
+      <polygon points="16,50 32,50 34,56 14,56" fill="#D97706" stroke="#92400E" stroke-width="1"/>
+      <!-- Star on Trophy -->
+      <polygon points="24,18 26,23 31,23 27,26 29,31 24,28 19,31 21,26 17,23 22,23" fill="#FFFFFF"/>
+    </g>
+
+    <!-- Main Head -->
+    <path d="M 75 115 C 55 145 58 185 92 198 C 112 205 148 205 168 198 C 202 185 205 145 185 115 C 170 90 90 90 75 115 Z" fill="url(#celSkinGrad)" stroke="#B44000" stroke-width="3"/>
+
+    <!-- Eye Bulb Sockets -->
+    <circle cx="95" cy="94" r="28" fill="url(#celSkinGrad)" stroke="#B44000" stroke-width="3"/>
+    <circle cx="165" cy="94" r="28" fill="url(#celSkinGrad)" stroke="#B44000" stroke-width="3"/>
+
+    <!-- Eye Sclera (White) -->
+    <circle cx="97" cy="94" r="21" fill="#FFFFFF" stroke="#E2E8F0" stroke-width="1.5"/>
+    <circle cx="163" cy="94" r="21" fill="#FFFFFF" stroke="#E2E8F0" stroke-width="1.5"/>
+
+    <!-- Sparkling Pupils (Star sparkle in eye for celebration!) -->
+    <circle cx="99" cy="94" r="14" fill="#211103"/>
+    <circle cx="161" cy="94" r="14" fill="#211103"/>
+    
+    <!-- Specular Highlights (Sparkling Star + Dots) -->
+    <polygon points="103,88 105,92 109,92 106,94 107,98 103,96 99,98 100,94 97,92 101,92" fill="#FFFFFF"/>
+    <circle cx="94" cy="100" r="2.8" fill="#FFFFFF"/>
+
+    <polygon points="165,88 167,92 171,92 168,94 169,98 165,96 161,98 162,94 159,92 163,92" fill="#FFFFFF"/>
+    <circle cx="156" cy="100" r="2.8" fill="#FFFFFF"/>
+
+    <!-- Eyelid folds -->
+    <path d="M 78 76 C 88 68, 108 70, 116 78" stroke="#B44000" stroke-width="3" stroke-linecap="round"/>
+    <path d="M 182 76 C 172 68, 152 70, 144 78" stroke="#B44000" stroke-width="3" stroke-linecap="round"/>
+
+    <!-- Golden Laurel Wreath / Crown on Head -->
+    <g transform="translate(130, 68)">
+      <!-- Left Laurel Branch -->
+      <path d="M -10 10 C -25 5 -45 -5 -40 -20 C -38 -26 -28 -24 -24 -15 C -20 -5 -5 6 0 10" fill="url(#laurelGrad)" stroke="#B45309" stroke-width="1.5"/>
+      <ellipse cx="-42" cy="-14" rx="7" ry="4" transform="rotate(-35 -42 -14)" fill="#FFE082" stroke="#B45309" stroke-width="1"/>
+      <ellipse cx="-30" cy="-6" rx="7" ry="4" transform="rotate(-20 -30 -6)" fill="#FFE082" stroke="#B45309" stroke-width="1"/>
+      <ellipse cx="-16" cy="2" rx="7" ry="4" transform="rotate(-5 -16 2)" fill="#FFE082" stroke="#B45309" stroke-width="1"/>
+
+      <!-- Right Laurel Branch -->
+      <path d="M 10 10 C 25 5 45 -5 40 -20 C 38 -26 28 -24 24 -15 C 20 -5 5 6 0 10" fill="url(#laurelGrad)" stroke="#B45309" stroke-width="1.5"/>
+      <ellipse cx="42" cy="-14" rx="7" ry="4" transform="rotate(35 42 -14)" fill="#FFE082" stroke="#B45309" stroke-width="1"/>
+      <ellipse cx="30" cy="-6" rx="7" ry="4" transform="rotate(20 30 -6)" fill="#FFE082" stroke="#B45309" stroke-width="1"/>
+      <ellipse cx="16" cy="2" rx="7" ry="4" transform="rotate(5 16 2)" fill="#FFE082" stroke="#B45309" stroke-width="1"/>
+
+      <!-- Center Gold Medallion with Ruby -->
+      <circle cx="0" cy="10" r="7" fill="#F59E0B" stroke="#92400E" stroke-width="1.5"/>
+      <circle cx="0" cy="10" r="4.5" fill="#EF4444"/>
+      <circle cx="-1.5" cy="8.5" r="1.5" fill="#FFFFFF" opacity="0.8"/>
+    </g>
+
+    <!-- Chin / Throat Area -->
+    <path d="M 98 155 C 102 175, 158 175, 162 155 C 166 180, 155 198, 130 200 C 105 198, 94 180, 98 155 Z" fill="url(#celBellyGrad)"/>
+
+    <!-- Wide Joyful Open Smile -->
+    <path d="M 90 144 C 105 136, 155 136, 170 144 C 174 154, 168 180, 130 182 C 92 180, 86 154, 90 144 Z" fill="#880E4F" stroke="#7A1D00" stroke-width="2.5" stroke-linejoin="round"/>
+    
+    <!-- Mouth Tongue -->
+    <path d="M 108 168 C 114 158, 146 158, 152 168 C 146 180, 114 180, 108 168 Z" fill="#FF4081"/>
+
+    <!-- Cheek Blush -->
+    <ellipse cx="78" cy="150" rx="9" ry="5.5" fill="#FF3D00" opacity="0.3"/>
+    <ellipse cx="182" cy="150" rx="9" ry="5.5" fill="#FF3D00" opacity="0.3"/>
+
+    <!-- FPT POLO SHIRT -->
+    <path d="M 82 192 L 74 240 L 186 240 L 178 192 C 160 202, 100 202, 82 192 Z" fill="url(#shirtGrad2)" stroke="#BF360C" stroke-width="2.5"/>
+
+    <!-- White Collar with Orange Trim -->
+    <path d="M 130 200 L 96 188 L 106 215 L 130 206 Z" fill="#FFFFFF" stroke="#CBD5E1" stroke-width="1.5"/>
+    <path d="M 130 200 L 164 188 L 154 215 L 130 206 Z" fill="#FFFFFF" stroke="#CBD5E1" stroke-width="1.5"/>
+    
+    <!-- Placket & Buttons -->
+    <rect x="126" y="204" width="8" height="28" fill="#FFFFFF" rx="2" stroke="#CBD5E1" stroke-width="1"/>
+    <circle cx="130" cy="212" r="1.8" fill="#FF6F00"/>
+    <circle cx="130" cy="224" r="1.8" fill="#FF6F00"/>
+
+    <!-- FPT Logo on Chest -->
+    <g transform="translate(146, 214) scale(0.65)">
+      <rect x="0" y="0" width="34" height="15" rx="3" fill="#FFFFFF" opacity="0.95"/>
+      <text x="3" y="11" font-family="'Plus Jakarta Sans', Arial, sans-serif" font-weight="900" font-size="8" fill="#FF6F00">FPT</text>
+      <text x="21" y="7" font-family="'Plus Jakarta Sans', Arial, sans-serif" font-weight="700" font-size="4" fill="#0066B2">EDU</text>
+      <text x="21" y="12" font-family="'Plus Jakarta Sans', Arial, sans-serif" font-weight="600" font-size="3.5" fill="#10B981">UNI</text>
+    </g>
+
+    <!-- Golden Winner Ribbon / Sash across chest -->
+    <path d="M 84 195 L 110 240 L 126 240 L 98 194 Z" fill="#FFD54F" opacity="0.9" stroke="#F59E0B" stroke-width="1"/>
+    <path d="M 88 196 L 122 240" stroke="#FFF" stroke-width="1.5" stroke-dasharray="3,2"/>
+
+  </g>
+</svg>

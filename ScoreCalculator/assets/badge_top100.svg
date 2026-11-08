@@ -1,0 +1,78 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 180 180" width="100%" height="100%" fill="none">
+  <defs>
+    <linearGradient id="top100Grad" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#FEF08A"/>
+      <stop offset="40%" stop-color="#FBBF24"/>
+      <stop offset="100%" stop-color="#D97706"/>
+    </linearGradient>
+    <linearGradient id="top100Shield" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#1E3A8A"/>
+      <stop offset="100%" stop-color="#0F172A"/>
+    </linearGradient>
+    <filter id="top100Shadow" x="-15%" y="-15%" width="130%" height="130%">
+      <feDropShadow dx="0" dy="4" stdDeviation="4" flood-color="#1E3A8A" flood-opacity="0.3"/>
+    </filter>
+  </defs>
+
+  <g filter="url(#top100Shadow)">
+    <!-- Radiating Starburst -->
+    <g transform="translate(90, 80)" fill="#FDE68A" opacity="0.5">
+      <polygon points="0,-65 14,-36 36,-54 26,-24 54,-28 36,-4 65,0 36,4 54,28 26,24 36,54 14,36 0,65 -14,36 -36,54 -26,24 -54,28 -36,4 -65,0 -36,-4 -54,-28 -26,-24 -36,-54 -14,-36"/>
+    </g>
+
+    <!-- Outer Ring -->
+    <circle cx="90" cy="80" r="58" fill="url(#top100Grad)" stroke="#B45309" stroke-width="2.5"/>
+    <circle cx="90" cy="80" r="52" fill="none" stroke="#FFFFFF" stroke-width="1.2" stroke-dasharray="3,2"/>
+    
+    <!-- Inner Blue Velvet Shield -->
+    <circle cx="90" cy="80" r="46" fill="url(#top100Shield)"/>
+
+    <!-- Laurels around Star -->
+    <g transform="translate(90, 80)" stroke="#FBBF24" stroke-width="1.5" fill="none">
+      <path d="M -32 4 C -36 -10 -26 -26 -12 -30"/>
+      <path d="M 32 4 C 36 -10 26 -26 12 -30"/>
+      <ellipse cx="-28" cy="-8" rx="4.5" ry="2" transform="rotate(-30 -28 -8)" fill="#FDE68A"/>
+      <ellipse cx="-20" cy="-20" rx="4.5" ry="2" transform="rotate(-15 -20 -20)" fill="#FDE68A"/>
+      <ellipse cx="28" cy="-8" rx="4.5" ry="2" transform="rotate(30 28 -8)" fill="#FDE68A"/>
+      <ellipse cx="20" cy="-20" rx="4.5" ry="2" transform="rotate(15 20 -20)" fill="#FDE68A"/>
+    </g>
+
+    <!-- Brilliant 5-Point Center Star -->
+    <g transform="translate(90, 74)">
+      <!-- Star Shape -->
+      <polygon points="0,-32 9,-10 32,-10 14,4 20,26 0,14 -20,26 -14,4 -32,-10 -9,-10" fill="url(#top100Grad)" stroke="#D97706" stroke-width="1.5"/>
+      <!-- Inner Star Highlight -->
+      <polygon points="0,-28 7,-9 28,-9 12,3 17,22 0,12 -17,22 -12,3 -28,-9 -7,-9" fill="#FFFBEB" opacity="0.3"/>
+      
+      <!-- Bold "100" in Center -->
+      <text x="0" y="7" font-family="'Plus Jakarta Sans', system-ui, sans-serif" font-size="14" font-weight="900" fill="#78350F" text-anchor="middle" letter-spacing="-0.5">
+        100
+      </text>
+    </g>
+
+    <!-- Small Sparkles -->
+    <circle cx="65" cy="52" r="2" fill="#FFFFFF"/>
+    <circle cx="115" cy="52" r="2" fill="#FFFFFF"/>
+
+    <!-- Banner Ribbon Across Bottom -->
+    <g transform="translate(90, 134)">
+      <!-- Ribbon Tails -->
+      <polygon points="-75,-4 -85,12 -70,8 -58,6" fill="#1E3A8A"/>
+      <polygon points="75,-4 85,12 70,8 58,6" fill="#1E3A8A"/>
+      <!-- Main Ribbon -->
+      <rect x="-62" y="-12" width="124" height="24" rx="6" fill="#1E40AF" stroke="#3B82F6" stroke-width="1.5"/>
+      
+      <text x="0" y="4.5" font-family="'Plus Jakarta Sans', system-ui, sans-serif" font-size="11" font-weight="900" fill="#FDE68A" text-anchor="middle" letter-spacing="0.5">
+        TOP 100 SVXS
+      </text>
+    </g>
+
+    <!-- Bottom Score Sub-Pill -->
+    <g transform="translate(90, 156)">
+      <rect x="-38" y="-7" width="76" height="14" rx="7" fill="#EFF6FF" stroke="#3B82F6" stroke-width="1"/>
+      <text x="0" y="3" font-family="'Plus Jakarta Sans', system-ui, sans-serif" font-size="8.5" font-weight="800" fill="#1E40AF" text-anchor="middle">
+        9.20 - 9.59
+      </text>
+    </g>
+  </g>
+</svg>
