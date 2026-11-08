@@ -1984,24 +1984,24 @@ function renderExportCard(targetContainer, semesterNum, options) {
 
         return `
             <tr class="${idx % 2 === 0 ? "bg-white" : "bg-slate-50/70"} border-b border-slate-200">
-                <td class="py-3 px-4 font-bold text-slate-800 border-r border-slate-200 text-sm align-middle" style="vertical-align: middle !important;">
-                    <div class="cell-wrapper" style="display: flex; align-items: center; min-height: 40px;">
+                <td class="font-bold text-slate-800 border-r border-slate-200 text-sm align-middle" style="vertical-align: middle !important; padding: 0 !important; height: 1px;">
+                    <div class="cell-wrapper" style="display: flex; align-items: center; height: 100%; min-height: 52px; padding: 10px 14px; box-sizing: border-box;">
                         ${sub.code}
                     </div>
                 </td>
-                <td class="py-3 px-4 text-slate-700 font-medium border-r border-slate-200 text-sm align-middle" style="vertical-align: middle !important;">
-                    <div style="min-height: 40px; display: flex; flex-direction: column; justify-content: center;">
+                <td class="text-slate-700 font-medium border-r border-slate-200 text-sm align-middle" style="vertical-align: middle !important; padding: 0 !important; height: 1px;">
+                    <div class="cell-wrapper-col" style="display: flex; flex-direction: column; justify-content: center; height: 100%; min-height: 52px; padding: 10px 14px; box-sizing: border-box;">
                         <span class="font-bold text-slate-800">${sub.nameVi}</span>
                         ${compBreakdownHtml}
                     </div>
                 </td>
-                <td class="py-3 px-4 text-center font-bold font-mono ${subRes.isPass ? "text-slate-900" : "text-rose-600"} border-r border-slate-200 text-base align-middle" style="vertical-align: middle !important;">
-                    <div class="cell-wrapper-center" style="display: flex; align-items: center; justify-content: center; min-height: 40px;">
+                <td class="text-center font-bold font-mono ${subRes.isPass ? "text-slate-900" : "text-rose-600"} border-r border-slate-200 text-base align-middle" style="vertical-align: middle !important; padding: 0 !important; height: 1px;">
+                    <div class="cell-wrapper-center" style="display: flex; align-items: center; justify-content: center; height: 100%; min-height: 52px; padding: 10px 14px; box-sizing: border-box;">
                         ${subRes.roundedScore}
                     </div>
                 </td>
-                <td class="py-3 px-4 text-center align-middle" style="vertical-align: middle !important;">
-                    <div class="cell-wrapper-center" style="display: flex; align-items: center; justify-content: center; min-height: 40px;">
+                <td class="text-center align-middle" style="vertical-align: middle !important; padding: 0 !important; height: 1px;">
+                    <div class="cell-wrapper-center" style="display: flex; align-items: center; justify-content: center; height: 100%; min-height: 52px; padding: 10px 14px; box-sizing: border-box;">
                         ${badge}
                     </div>
                 </td>
